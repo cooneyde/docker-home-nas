@@ -3,13 +3,14 @@ services:
   adguard:
     container_name: adguard
     image: adguard/adguardhome
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "853:853/tcp"
-      - "9443:443/tcp"
-      - "3000:3000/tcp"
-      - "81:80"
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.4 #static address you want on the container
+    cap_add: 
+      - NET_ADMIN
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
@@ -19,29 +20,29 @@ services:
   # pihole:
   #   container_name: pihole
   #   image: pihole/pihole:latest
-  #   ports:
-  #     - "53:53/tcp"
-  #     - "53:53/udp"
-  #     - "81:80/tcp"
-  #     - "9443:443/tcp"
-  #   environment:
-  #     TZ: 'Europe/Dublin'
-  #     # WEBPASSWORD: 'set a secure password here or it will be random'
-  #   # Volumes store your data between container upgrades
   #   volumes:
   #     - '/share/cachedev1/pihole/etc/:/etc/pihole/'
   #     - '/share/cachedev1/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+  #   environment:
+  #     TZ: Europe/Dublin
+  #     SERVERIP: 192.168.114.3 #IP of the NAS
   #   dns:
   #     - 127.0.0.1
   #     - 1.1.1.1
+  #   networks: 
+  #     docker-net-0:
+  #       ipv4_address: 192.168.114.4 #static address you want on the container
+  #   cap_add: 
+  #     - NET_ADMIN
   #   restart: unless-stopped
   #   healthcheck:
   #     test: ["CMD", "curl", "-f", "http://localhost"]
   #     interval: 1m30s
   #     timeout: 10s
-  #     retries: 3  
+  #     retries: 3
   watchtower:
     image: v2tec/watchtower
+    container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
@@ -105,7 +106,6 @@ services:
     ports:
       - 3579:3579
     restart: always
-    network_mode: host
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
       interval: 1m30s
@@ -114,7 +114,10 @@ services:
   plex:
     image: linuxserver/plex
     container_name: plex
-    network_mode: host
+    hostname: cooneyde
+    networks: 
+      docker-net-1:
+        ipv4_address: 192.168.114.6
     environment:
       - PUID=1000
       - PGID=1000
@@ -131,11 +134,18 @@ services:
       timeout: 10s
       retries: 3
   portainer:
-    container_name: Portainer
-    image: portainer/portainer
+    container_name: portainer
+    image: portainer/portainer-ce
     restart: always
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.5
     ports:
-      - 9000:9000
+      - 80:9000
+    entrypoint: /portainer -p :80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /share/cachedev1/portainer:/data  
@@ -173,6 +183,7 @@ services:
       - UMASK_SET=022 #optional
     ports:
       - 8989:8989
+    network_mode: host
     volumes:
       - /share/cachedev1/sonarr:/config
       - /share/Multimedia/video/tv-shows:/tv
@@ -198,3 +209,8 @@ services:
     ports:
       - 8000:80
     restart: always
+networks: 
+  docker-net-0:
+    external: true
+  docker-net-1:
+    external: true

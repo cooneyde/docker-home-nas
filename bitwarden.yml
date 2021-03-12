@@ -1,0 +1,75 @@
+version: "3"
+services:
+  bitwarden:
+    container_name: bitwarden
+    image: bitwardenrs/server:latest
+    restart: always
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.8
+    environment: 
+      WEBSOCKET_ENABLED: "true"
+      # ROCKET_TLS: '{certs = "/ssl/bitwarden.crt", key = "/ssl/bitwarden.key"}'
+      # ROCKET_PORT: 443
+    ports:
+      - 3012:3012
+      - 80:80
+    #   - 443:443
+    volumes:
+      - /share/cachedev1/bitwarden:/data  
+      # - /share/cachedev1/bitwarden/ssl:/ssl
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 80:80
+      - 443:443
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.10
+    volumes:
+      - /share/cachedev1/nginx:/etc/nginx
+      - /share/cachedev1/bitwarden/ssl:/etc/ssl
+  # swag:
+  #   image: ghcr.io/linuxserver/swag
+  #   container_name: swag
+  #   cap_add:
+  #     - NET_ADMIN
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Europe/London
+  #     - URL=cooneyde.myqnapcloud.com
+  #     - SUBDOMAINS=wildcard
+  #     - VALIDATION=dns
+  #     - CERTPROVIDER= #optional
+  #     - DNSPLUGIN=cloudflare #optional
+  #     - PROPAGATION= #optional
+  #     - DUCKDNSTOKEN= #optional
+  #     - EMAIL= #optional
+  #     - ONLY_SUBDOMAINS=false #optional
+  #     - EXTRA_DOMAINS= #optional
+  #     - STAGING=false #optional
+  #     - MAXMINDDB_LICENSE_KEY= #optional
+  #   dns:
+  #     - 127.0.0.1
+  #     - 1.1.1.1
+  #   networks: 
+  #     docker-net-0:
+  #       ipv4_address: 192.168.114.9
+  #   volumes:
+  #     - /share/cachedev1/swag/config:/config
+  #   ports:
+  #     - 443:443
+  #     - 80:80 #optional
+  #   restart: unless-stopped
+networks: 
+  docker-net-0:
+    external: true
+  docker-net-1:
+    external: true

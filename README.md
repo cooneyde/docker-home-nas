@@ -14,3 +14,13 @@ docker-compose for home server with adguard, sonarr, radarr, jackett, etc instal
 * AdGuard https://github.com/AdguardTeam/AdGuardHome
 
 
+## Setting up docker networks on both ethernet ports 
+Driver here is set to qnet, a native driver on QNAP NAS servers
+
+```
+docker network create --driver=qnet --ipam-driver=qnet --ipam-opt=iface=eth0 --subnet 192.168.X.0/24 --gateway 192.168.X.Z my-network
+
+```
+
+## Useful URLs
+* Setting up bitwarden with https: https://scyzoryk.fubar.pl/bitwarden-on-qnap/
