@@ -100,14 +100,6 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - deluge
-      - jackett
-      - ombi
-      - plex
-      - portainer
-      - radarr
-      - sonarr
     command: 
       - "watchtower --interval 21600"
 networks: 
