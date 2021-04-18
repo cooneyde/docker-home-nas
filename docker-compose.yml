@@ -56,6 +56,4 @@ services:
       - /share/cachedev1/portainer:/data
 networks: 
   docker-net-0:
-    external: true
-  docker-net-1:
-    external: true
+    external: true  
