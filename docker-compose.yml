@@ -1,20 +1,21 @@
 version: "3"
 services:
-  watchtower:
-    image: v2tec/watchtower
-    container_name: watchtower
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    restart: always
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.5
+    ports:
+      - 80:9000
+    entrypoint: /portainer -p :80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - deluge
-      - jackett
-      - ombi
-      - plex
-      - portainer
-      - radarr
-      - sonarr
-    command: 
-      - "watchtower --interval 21600"
+      - /share/cachedev1/portainer:/data  
   ombi:
     image: linuxserver/ombi
     container_name: ombi

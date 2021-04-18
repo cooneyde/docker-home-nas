@@ -38,22 +38,23 @@ services:
   #     interval: 1m30s
   #     timeout: 10s
   #     retries: 3
-  portainer:
-    container_name: portainer
-    image: portainer/portainer-ce
+  bitwarden:
+    container_name: bitwarden
+    image: bitwardenrs/server:latest
     restart: always
     dns:
       - 127.0.0.1
       - 1.1.1.1
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.5
+        ipv4_address: 192.168.114.8
+    environment: 
+      WEBSOCKET_ENABLED: "true"
     ports:
-      - 80:9000
-    entrypoint: /portainer -p :80
+      - 3012:3012
+      - 80:80
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /share/cachedev1/portainer:/data  
+      - /share/cachedev1/bitwarden:/data  
   nginx-proxy:
     container_name: nginx-proxy
     restart: always
@@ -94,6 +95,21 @@ services:
         ipv4_address: 192.168.114.20
     volumes:
       - ./share/cachedev1/mysql:/var/lib/mysql
+  watchtower:
+    image: v2tec/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - deluge
+      - jackett
+      - ombi
+      - plex
+      - portainer
+      - radarr
+      - sonarr
+    command: 
+      - "watchtower --interval 21600"
 networks: 
   docker-net-0:
     external: true
