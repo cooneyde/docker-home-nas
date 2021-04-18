@@ -1,0 +1,101 @@
+version: '3'
+services: 
+  adguard:
+    container_name: adguard
+    image: adguard/adguardhome
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.4 #static address you want on the container
+    environment: 
+      TZ: 'Europe/Dublin'
+    volumes: 
+      - /share/cachedev1/adguardhome/workdir:/opt/adguardhome/work
+      - /share/cachedev1/adguardhome/confdir:/opt/adguardhome/conf
+    restart: always
+  # pihole:
+  #   container_name: pihole
+  #   image: pihole/pihole:latest
+  #   volumes:
+  #     - '/share/cachedev1/pihole/etc/:/etc/pihole/'
+  #     - '/share/cachedev1/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+  #   environment:
+  #     TZ: Europe/Dublin
+  #     SERVERIP: 192.168.114.3 #IP of the NAS
+  #   dns:
+  #     - 127.0.0.1
+  #     - 1.1.1.1
+  #   networks: 
+  #     docker-net-0:
+  #       ipv4_address: 192.168.114.4 #static address you want on the container
+  #   cap_add: 
+  #     - NET_ADMIN
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost"]
+  #     interval: 1m30s
+  #     timeout: 10s
+  #     retries: 3
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
+    restart: always
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.5
+    ports:
+      - 80:9000
+    entrypoint: /portainer -p :80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /share/cachedev1/portainer:/data  
+  nginx-proxy:
+    container_name: nginx-proxy
+    restart: always
+    image: 'jc21/nginx-proxy-manager:latest'
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    environment:
+      DB_MYSQL_HOST: "192.168.114.20"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: "npm"
+      DB_MYSQL_NAME: "npm"
+      VIRTUAL_HOST: "cooneydebw.ddns.net"
+      LETSENCRYPT_HOST: "cooneydebw.ddns.net"
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.10
+    volumes:
+      - /share/cachedev1/nginx-proxy-manager/data:/data
+      - /share/cachedev1/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /share/cachedev1/ssl-certs/ssl:/etc/ssl
+  db:
+    container_name: nginx-db
+    restart: always
+    image: 'jc21/mariadb-aria:latest'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'npm'
+      MYSQL_PASSWORD: 'npm'
+    networks: 
+      docker-net-0: 
+        ipv4_address: 192.168.114.20
+    volumes:
+      - ./share/cachedev1/mysql:/var/lib/mysql
+networks: 
+  docker-net-0:
+    external: true
+  docker-net-1:
+    external: true

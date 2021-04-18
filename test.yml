@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:stable
+    volumes:
+      - /share/cachedev1/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    ports:
+      
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.13
+networks: 
+  docker-net-0:
+    external: true
+  docker-net-1:
+    external: true
