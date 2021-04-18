@@ -1,43 +1,5 @@
 version: '3'
 services: 
-  adguard:
-    container_name: adguard
-    image: adguard/adguardhome
-    dns:
-      - 127.0.0.1
-      - 1.1.1.1
-    networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.4 #static address you want on the container
-    environment: 
-      TZ: 'Europe/Dublin'
-    volumes: 
-      - /share/cachedev1/adguardhome/workdir:/opt/adguardhome/work
-      - /share/cachedev1/adguardhome/confdir:/opt/adguardhome/conf
-    restart: always
-  # pihole:
-  #   container_name: pihole
-  #   image: pihole/pihole:latest
-  #   volumes:
-  #     - '/share/cachedev1/pihole/etc/:/etc/pihole/'
-  #     - '/share/cachedev1/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
-  #   environment:
-  #     TZ: Europe/Dublin
-  #     SERVERIP: 192.168.114.3 #IP of the NAS
-  #   dns:
-  #     - 127.0.0.1
-  #     - 1.1.1.1
-  #   networks: 
-  #     docker-net-0:
-  #       ipv4_address: 192.168.114.4 #static address you want on the container
-  #   cap_add: 
-  #     - NET_ADMIN
-  #   restart: unless-stopped
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost"]
-  #     interval: 1m30s
-  #     timeout: 10s
-  #     retries: 3
   bitwarden:
     container_name: bitwarden
     image: bitwardenrs/server:latest
@@ -102,6 +64,24 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: 
       - "watchtower --interval 21600"
+  ombi:
+    image: linuxserver/ombi
+    container_name: ombi
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - BASE_URL=/ombi #optional
+    volumes:
+      - /share/cachedev1/ombi:/config
+    ports:
+      - 3579:3579
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
 networks: 
   docker-net-0:
     external: true
