@@ -26,7 +26,7 @@ services:
       - '81:81'
       - '443:443'
     environment:
-      DB_MYSQL_HOST: "192.168.114.20"
+      DB_MYSQL_HOST: "nginx-db"
       DB_MYSQL_PORT: 3306
       DB_MYSQL_USER: "npm"
       DB_MYSQL_PASSWORD: "npm"
@@ -43,7 +43,9 @@ services:
       - /share/cachedev1/nginx-proxy-manager/data:/data
       - /share/cachedev1/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
       - /share/cachedev1/ssl-certs/ssl:/etc/ssl
-  db:
+    depends_on:
+      - nginx-db
+  nginx-db:
     container_name: nginx-db
     restart: always
     image: 'jc21/mariadb-aria:latest'
