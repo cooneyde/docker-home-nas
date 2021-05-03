@@ -31,8 +31,8 @@ services:
       DB_MYSQL_USER: "npm"
       DB_MYSQL_PASSWORD: "npm"
       DB_MYSQL_NAME: "npm"
-      VIRTUAL_HOST: "cooneydebw.ddns.net"
-      LETSENCRYPT_HOST: "cooneydebw.ddns.net"
+      VIRTUAL_HOST: "cooneyde.myqnapcloud.com"
+      LETSENCRYPT_HOST: "cooneyde.myqnapcloud.com"
     dns:
       - 127.0.0.1
       - 1.1.1.1
@@ -56,15 +56,14 @@ services:
       docker-net-0: 
         ipv4_address: 192.168.114.20
     volumes:
-      - ./share/cachedev1/mysql:/var/lib/mysql
+      - /share/cachedev1/mysql:/var/lib/mysql
   watchtower:
-    image: v2tec/watchtower
+    image: containrrr/watchtower
     container_name: watchtower
-    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: 
-      - "watchtower --interval 21600"
+    command: --schedule "0 0 6 * * *"
+    restart: always
   ombi:
     image: linuxserver/ombi
     container_name: ombi
@@ -72,7 +71,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - BASE_URL=/ombi #optional
+      - BASE_URL=/ #optional
     volumes:
       - /share/cachedev1/ombi:/config
     ports:
