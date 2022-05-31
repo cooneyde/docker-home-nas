@@ -35,7 +35,6 @@ services:
       - /share/Download:/downloads
     ports:
       - 7878:7878
-    network_mode: host
     restart: always
     depends_on:
       - jackett
@@ -45,6 +44,9 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+    networks: 
+      docker-net-1:
+        ipv4_address: 192.168.114.7
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -54,7 +56,6 @@ services:
       - TZ=Europe/London
     ports:
       - 8989:8989
-    network_mode: host
     volumes:
       - /share/containers/volumes/sonarr:/config
       - /share/Multimedia/video/tv-shows:/tv
@@ -68,6 +69,9 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+    networks: 
+      docker-net-1:
+        ipv4_address: 192.168.114.8
   deluge:
     image: linuxserver/deluge
     container_name: deluge
@@ -104,6 +108,9 @@ services:
       interval: 1m30s
       timeout: 10s
       retries: 3
+    networks: 
+      docker-net-1:
+        ipv4_address: 192.168.114.9
 networks: 
   docker-net-0:
     external: true

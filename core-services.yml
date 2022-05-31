@@ -9,7 +9,7 @@ services:
       - 1.1.1.1
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.8
+        ipv4_address: 192.168.114.10
     environment: 
       WEBSOCKET_ENABLED: "true"
     ports:
@@ -37,7 +37,7 @@ services:
       - 1.1.1.1
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.10
+        ipv4_address: 192.168.114.11
     volumes:
       - /share/containers/volumes/nginx-proxy-manager/data:/data
       - /share/containers/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
@@ -55,7 +55,7 @@ services:
       MYSQL_PASSWORD: 'npm'
     networks: 
       docker-net-0: 
-        ipv4_address: 192.168.114.20
+        ipv4_address: 192.168.114.12
     volumes:
       - /share/containers/volumes/mysql:/var/lib/mysql
   watchtower:
