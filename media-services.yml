@@ -86,7 +86,7 @@ services:
       - 8112:8112
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD", "curl", "-f", "http://localhost:8112"]
       interval: 1m30s
       timeout: 10s
       retries: 3
