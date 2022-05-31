@@ -31,6 +31,7 @@ services:
       DB_MYSQL_USER: "npm"
       DB_MYSQL_PASSWORD: "npm"
       DB_MYSQL_NAME: "npm"
+      DISABLE_IPV6: true
       # VIRTUAL_HOST: "cooneyde.myqnapcloud.com"
     dns:
       - 127.0.0.1
