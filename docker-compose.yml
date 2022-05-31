@@ -12,15 +12,15 @@ services:
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
-      - /share/cachedev1/adguardhome/workdir:/opt/adguardhome/work
-      - /share/cachedev1/adguardhome/confdir:/opt/adguardhome/conf
+      - /share/containers/volumes/adguardhome/workdir:/opt/adguardhome/work
+      - /share/containers/volumes/adguardhome/confdir:/opt/adguardhome/conf
     restart: always
   # pihole:
   #   container_name: pihole
   #   image: pihole/pihole:latest
   #   volumes:
-  #     - '/share/cachedev1/pihole/etc/:/etc/pihole/'
-  #     - '/share/cachedev1/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+  #     - '/share/containers/volumes/pihole/etc/:/etc/pihole/'
+  #     - '/share/containers/volumes/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
   #   environment:
   #     TZ: Europe/Dublin
   #     SERVERIP: 192.168.114.3 #IP of the NAS
@@ -53,7 +53,7 @@ services:
     entrypoint: /portainer -p :80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /share/cachedev1/portainer:/data
+      - /share/containers/volumes/portainer:/data
 networks: 
   docker-net-0:
     external: true  

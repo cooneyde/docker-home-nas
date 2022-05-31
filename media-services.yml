@@ -12,7 +12,7 @@ services:
       - PGID=1000
       - VERSION=docker
     volumes:
-      - /share/cachedev1/plex:/config
+      - /share/containers/volumes/plex:/config
       - /share/Multimedia/video/tv-shows:/tv
       - /share/Multimedia/video/Movies:/movies
     restart: always
@@ -30,7 +30,7 @@ services:
       - TZ=Europe/London
       - UMASK_SET=022 #optional
     volumes:
-      - /share/cachedev1/radarr:/config
+      - /share/containers/volumes/radarr:/config
       - /share/Multimedia/video/Movies:/movies
       - /share/Download:/downloads
     ports:
@@ -56,7 +56,7 @@ services:
       - 8989:8989
     network_mode: host
     volumes:
-      - /share/cachedev1/sonarr:/config
+      - /share/containers/volumes/sonarr:/config
       - /share/Multimedia/video/tv-shows:/tv
       - /share/Download:/downloads
     restart: always
@@ -76,7 +76,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /share/cachedev1/deluge:/config
+      - /share/containers/volumes/deluge:/config
       - /share/Download:/downloads
     ports:
       - 8112:8112
@@ -94,7 +94,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /share/cachedev1/jackett:/config
+      - /share/containers/volumes/jackett:/config
       - /share/Download:/downloads
     ports:
       - 9117:9117

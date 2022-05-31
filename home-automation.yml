@@ -4,7 +4,7 @@ services:
     container_name: homeassistant
     image: homeassistant/home-assistant:stable
     volumes:
-      - /share/cachedev1/homeassistant:/config
+      - /share/containers/volumes/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
     restart: always
     dns:

@@ -16,7 +16,7 @@ services:
       - 3012:3012
       - 80:80
     volumes:
-      - /share/cachedev1/bitwarden:/data  
+      - /share/containers/volumes/bitwarden:/data  
   nginx-proxy:
     container_name: nginx-proxy
     restart: always
@@ -32,7 +32,6 @@ services:
       DB_MYSQL_PASSWORD: "npm"
       DB_MYSQL_NAME: "npm"
       VIRTUAL_HOST: "cooneyde.myqnapcloud.com"
-      LETSENCRYPT_HOST: "cooneyde.myqnapcloud.com"
     dns:
       - 127.0.0.1
       - 1.1.1.1
@@ -40,9 +39,9 @@ services:
       docker-net-0:
         ipv4_address: 192.168.114.10
     volumes:
-      - /share/cachedev1/nginx-proxy-manager/data:/data
-      - /share/cachedev1/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
-      - /share/cachedev1/ssl-certs/ssl:/etc/ssl
+      - /share/containers/volumes/nginx-proxy-manager/data:/data
+      - /share/containers/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /share/containers/volumes/ssl-certs/ssl:/etc/ssl
     depends_on:
       - nginx-db
   nginx-db:
@@ -58,7 +57,7 @@ services:
       docker-net-0: 
         ipv4_address: 192.168.114.20
     volumes:
-      - /share/cachedev1/mysql:/var/lib/mysql
+      - /share/containers/volumes/mysql:/var/lib/mysql
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
@@ -75,7 +74,7 @@ services:
       - TZ=Europe/London
       - BASE_URL=/ #optional
     volumes:
-      - /share/cachedev1/ombi:/config
+      - /share/containers/volumes/ombi:/config
     ports:
       - 3579:3579
     restart: always
