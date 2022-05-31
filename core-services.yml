@@ -40,7 +40,7 @@ services:
         ipv4_address: 192.168.114.11
     volumes:
       - /share/containers/volumes/nginx-proxy-manager/data:/data
-      # - /share/containers/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /share/containers/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
       - /share/containers/volumes//ssl:/etc/ssl
     depends_on:
       - nginx-db
