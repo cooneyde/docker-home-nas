@@ -19,7 +19,7 @@ services:
       - /share/containers/volumes/bitwarden:/data  
   nginx-proxy:
     container_name: nginx-proxy
-    restart: always
+    restart: unless-stopped
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
       - '80:80'
@@ -47,7 +47,7 @@ services:
       - nginx-db
   nginx-db:
     container_name: nginx-db
-    restart: always
+    restart: unless-stopped
     image: 'jc21/mariadb-aria:latest'
     environment:
       MYSQL_ROOT_PASSWORD: 'npm'
