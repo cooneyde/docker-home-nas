@@ -91,7 +91,7 @@ services:
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-1:
+      docker-net-0:
         ipv4_address: 192.168.114.15
   jackett:
     image: ghcr.io/linuxserver/jackett
