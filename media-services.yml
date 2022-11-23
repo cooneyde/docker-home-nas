@@ -8,8 +8,8 @@ services:
       docker-net-1:
         ipv4_address: 192.168.114.6
     environment:
-      - PUID=$PUID
-      - PGID=$PGID
+      - PUID=1000
+      - PGID=1000
       - VERSION=docker
     volumes:
       - /share/containers/volumes/plex:/config
