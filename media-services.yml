@@ -15,7 +15,10 @@ services:
       - /share/containers/volumes/plex:/config
       - /share/Multimedia/video/tv-shows:/tv
       - /share/Multimedia/video/Movies:/movies
+      - /share/Multimedia/transcode:/transcode
     restart: always
+    devices:
+      - /dev/dri:/dev/dri
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:32400/identity"]
       interval: 1m30s
