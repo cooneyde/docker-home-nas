@@ -16,6 +16,7 @@ services:
       - /share/Multimedia/video/tv-shows:/tv
       - /share/Multimedia/video/Movies:/movies
       - /share/Multimedia/transcode:/transcode
+      - /share/containers/volumes/plex/dev/dri:/dev/dri
     restart: always
     privileged: true
     devices:
