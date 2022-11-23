@@ -17,7 +17,6 @@ services:
       - /share/Multimedia/video/Movies:/movies
       - /share/Multimedia/transcode:/transcode
     restart: always
-    privileged: true
     devices:
       - /dev/dri:/dev/dri
     healthcheck:
