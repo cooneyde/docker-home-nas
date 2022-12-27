@@ -50,24 +50,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 21600
     restart: always
-  ombi:
-    image: linuxserver/ombi
-    container_name: ombi
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - BASE_URL=/ #optional
-    volumes:
-      - /share/containers/volumes/ombi:/config
-    ports:
-      - 3579:3579
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
 networks: 
   docker-net-0:
     external: true
