@@ -1,22 +1,5 @@
 version: '3'
 services: 
-  bitwarden:
-    container_name: bitwarden
-    image: bitwardenrs/server:latest
-    restart: always
-    dns:
-      - 127.0.0.1
-      - 1.1.1.1
-    networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.10
-    environment: 
-      WEBSOCKET_ENABLED: "true"
-    ports:
-      - 3012:3012
-      - 80:80
-    volumes:
-      - /share/containers/volumes/bitwarden:/data  
   nginx-proxy:
     container_name: nginx-proxy
     restart: always
