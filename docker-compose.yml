@@ -40,7 +40,7 @@ services:
   #     retries: 3
   portainer:
     container_name: portainer
-    image: portainer/portainer-ce
+    image: portainer/portainer-ee
     restart: always
     dns:
       - 127.0.0.1
