@@ -32,7 +32,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
-      - UMASK_SET=022 #optional
     volumes:
       - /share/containers/volumes/radarr:/config
       - /share/Multimedia/video/Movies:/movies

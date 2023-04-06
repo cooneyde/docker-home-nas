@@ -7,7 +7,6 @@ services:
     ports:
       - '80:80'
       - '81:81'
-      # - '443:443'
     environment:
       DB_MYSQL_HOST: "nginx-db"
       DB_MYSQL_PORT: 3306
@@ -17,7 +16,6 @@ services:
       DISABLE_IPV6: true
       PUID: "1000"
       PGID: "1000"
-      # VIRTUAL_HOST: "cooneyde.myqnapcloud.com"
     dns:
       - 127.0.0.1
       - 1.1.1.1
