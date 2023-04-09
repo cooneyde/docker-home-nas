@@ -3,7 +3,7 @@ services:
   nginx-proxy:
     container_name: nginx-proxy
     restart: always
-    image: 'jc21/nginx-proxy-manager:2.9.22'
+    image: 'jc21/nginx-proxy-manager:latest'
     ports:
       - '80:80'
       - '81:81'
@@ -14,8 +14,6 @@ services:
       DB_MYSQL_PASSWORD: "npm"
       DB_MYSQL_NAME: "npm"
       DISABLE_IPV6: true
-      PUID: "1000"
-      PGID: "1000"
     dns:
       - 127.0.0.1
       - 1.1.1.1
