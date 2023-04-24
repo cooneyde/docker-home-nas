@@ -3,7 +3,7 @@ services:
   nginx-proxy:
     container_name: nginx-proxy
     restart: always
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: 'jc21/nginx-proxy-manager:2.9.20'
     ports:
       - '80:80'
       - '81:81'
