@@ -5,7 +5,7 @@ services:
     container_name: plex
     hostname: cooneyde
     networks: 
-      docker-net-1:
+      docker-net-0:
         ipv4_address: 192.168.114.6
     environment:
       - PUID=1000
@@ -48,7 +48,7 @@ services:
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-1:
+      docker-net-0:
         ipv4_address: 192.168.114.7
   sonarr:
     image: linuxserver/sonarr
@@ -73,7 +73,7 @@ services:
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-1:
+      docker-net-0:
         ipv4_address: 192.168.114.8
   deluge:
     image: linuxserver/deluge
@@ -115,10 +115,8 @@ services:
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-1:
+      docker-net-0:
         ipv4_address: 192.168.114.9
 networks: 
   docker-net-0:
-    external: true
-  docker-net-1:
     external: true

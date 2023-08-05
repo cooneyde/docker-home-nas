@@ -16,5 +16,3 @@ services:
 networks: 
   docker-net-0:
     external: true
-  docker-net-1:
-    external: true
