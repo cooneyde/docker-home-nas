@@ -48,6 +48,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 21600
     restart: always
+  speedtest:
+    container_name: speedtest-tracker
+    networks: 
+      docker-net-0: 
+        ipv4_address: 192.168.114.18
+    volumes:
+      - '/share/containers/volumes/speedtest/config:/config'
+      - '/share/containers/volumes/speedtest/web:/etc/ssl/web'
+    image: 'ghcr.io/alexjustesen/speedtest-tracker:latest'
+    restart: unless-stopped
 networks: 
   docker-net-0:
     external: true
