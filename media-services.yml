@@ -118,5 +118,7 @@ services:
       docker-net-0:
         ipv4_address: 192.168.114.9
 networks: 
+  docker-net-0-test:
+    external: true
   docker-net-0:
     external: true
