@@ -25,7 +25,7 @@ docker network create --driver=qnet --ipam-driver=qnet --ipam-opt=iface=eth0 --s
 Another way to potentially set up the network is 
 
 ```
-docker network create -d macvlan --subnet=192.168.X.0/24 --gateway=192.168.X.Z -o parent=eth1 my_macvlan_net
+docker network create -d macvlan --subnet=192.168.X.0/24 --gateway=192.168.X.Z -o parent=eth0 --ipam-opt=iface=eth0 my_macvlan_net
 
 ```
 
