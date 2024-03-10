@@ -78,7 +78,7 @@ services:
       docker-net-0:
         ipv4_address: 192.168.114.8
   overseerr:
-    image: lscr.io/linuxserver/overseerr:latest
+    image: lscr.io/linuxserver/overseerr:develop
     container_name: overseerr
     environment:
       - PUID=1000
