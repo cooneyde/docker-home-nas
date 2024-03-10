@@ -56,6 +56,8 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - UMASK_SET=022
+      - VERSION=docker
       - TZ=Europe/London
     ports:
       - 8989:8989
