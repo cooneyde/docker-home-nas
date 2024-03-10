@@ -83,6 +83,8 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      - UMASK_SET=022
+      - VERSION=docker
       - TZ=Europe/London
     volumes:
       - /share/containers/volumes/overseerr/config:/config
