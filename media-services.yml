@@ -84,6 +84,8 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /share/containers/volumes/overseerr/config:/config
+    ports:
+      - 5055:5055
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.12
