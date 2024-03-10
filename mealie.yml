@@ -22,7 +22,7 @@ services:
       - DB_ENGINE=postgres
       - POSTGRES_USER=mealie
       - POSTGRES_PASSWORD=mealie
-      - POSTGRES_SERVER=postgres
+      - POSTGRES_SERVER=postgres-mealie
       - POSTGRES_PORT=5432
       - POSTGRES_DB=mealie
     restart: always
