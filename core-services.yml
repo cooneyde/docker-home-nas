@@ -58,6 +58,28 @@ services:
       - '/share/containers/volumes/speedtest/web:/etc/ssl/web'
     image: 'ghcr.io/alexjustesen/speedtest-tracker:latest'
     restart: unless-stopped
+  nextcloud:
+    image: nextcloud
+    networks: 
+      docker-net-0: 
+        ipv4_address: 192.168.114.20
+    volumes:
+      - /share/containers/nextcloud/data:/var/www/html
+    restart: always
+    depends_on:
+      - nextcloud-db
+  
+  nextcloud-db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - /share/containers/nextcloud/database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-cool-bicycle
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=my-next-bicycle-cloud
+    restart: always
 networks: 
   docker-net-0:
     external: true
