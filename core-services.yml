@@ -65,7 +65,7 @@ services:
       docker-net-0: 
         ipv4_address: 192.168.114.20
     volumes:
-      - /share/containers/nextcloud/data:/var/www/html
+      - /share/containers/volumes/nextcloud/data:/var/www/html
     restart: always
     depends_on:
       - nextcloud-db
@@ -75,7 +75,7 @@ services:
     container_name: nextcloud-db
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - /share/containers/nextcloud/database:/var/lib/mysql
+      - /share/containers/volumes/nextcloud/database:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=my-cool-bicycle
       - MYSQL_DATABASE=nextcloud
