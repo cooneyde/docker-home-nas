@@ -86,7 +86,7 @@ services:
       - /share/containers/volumes/overseerr/config:/config
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.13
+        ipv4_address: 192.168.114.17
     restart: always
   deluge:
     image: linuxserver/deluge
