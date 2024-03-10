@@ -1,15 +1,16 @@
 version: "3.7"
 services:
-  mealie:
+   mealie:
     image: ghcr.io/mealie-recipes/mealie:v1.3.2 # 
     container_name: mealie
-    networks: 
-      docker-net-0-test:
-        ipv4_address: 192.168.114.19
-    depends_on:
-      - postgres-mealie
+    ports:
+        - "9925:9000" # 
+    deploy:
+      resources:
+        limits:
+          memory: 1000M # 
     volumes:
-      - /share/containers/volumes/mealie/data/:/app/data/
+      - /share/containers/volumes/mealie/data:/app/data/
     environment:
     # Set Backend ENV Variables Here
       - ALLOW_SIGNUP=true
@@ -17,24 +18,7 @@ services:
       - PGID=1000
       - MAX_WORKERS=1
       - WEB_CONCURRENCY=1
-
-    # Database Settings
-      - DB_ENGINE=postgres
-      - POSTGRES_USER=mealie
-      - POSTGRES_PASSWORD=mealie
-      - POSTGRES_SERVER=postgres-mealie
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=mealie
     restart: always
-  postgres-mealie:
-    container_name: postgres-mealie
-    image: postgres:15
-    restart: always
-    volumes:
-      - /share/containers/volumes/mealie/database:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: mealie
-      POSTGRES_USER: mealie
 networks: 
   docker-net-0-test:
     external: true
