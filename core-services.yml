@@ -63,7 +63,7 @@ services:
     container_name: nextcloud
     networks: 
       docker-net-0: 
-        ipv4_address: 192.168.114.20
+        ipv4_address: 192.168.114.16
     volumes:
       - /share/containers/volumes/nextcloud/data:/var/www/html
     restart: always
