@@ -87,7 +87,7 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.13
-    restart: unless-stopped
+    restart: always
   deluge:
     image: linuxserver/deluge
     container_name: deluge
