@@ -23,7 +23,7 @@ services:
     volumes:
       - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
       - /volume1/Docker/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
-      #- /share/containers/volumes/ssl:/etc/ssl
+      - /volume1/.@plugins/AppCentral/letsencrypt/.CertBot/config/live:/etc/ssl
     depends_on:
       - nginx-db
   nginx-db:
