@@ -19,7 +19,7 @@ services:
       - 1.1.1.1
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.11
+        ipv4_address: 192.168.114.101
     volumes:
       - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
       - /volume1/Docker/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
@@ -37,7 +37,7 @@ services:
       MYSQL_PASSWORD: 'npm'
     networks: 
       docker-net-0: 
-        ipv4_address: 192.168.114.12
+        ipv4_address: 192.168.114.102
     volumes:
       - /volume1/Docker/volumes/mysql:/var/lib/mysql
   watchtower:
