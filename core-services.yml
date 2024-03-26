@@ -52,7 +52,7 @@ services:
     container_name: speedtest-tracker
     networks: 
       docker-net-0: 
-        ipv4_address: 192.168.114.18
+        ipv4_address: 192.168.114.103
     volumes:
       - /volume1/Docker/volumes/speedtest/config:/config
       - /volume1/Docker/volumes/speedtest/web:/etc/ssl/web
