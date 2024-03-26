@@ -16,7 +16,7 @@ services:
       - /volume1/Docker/volumes/plex:/config
       - /volume1/Video/tv-shows:/tv
       - /volume1/Video/Movies:/movies
-      - /volume1/video/transcode:/transcode
+      - /volume1/Video/transcode:/transcode
     restart: always
     devices:
       - /dev/dri:/dev/dri
@@ -49,7 +49,7 @@ services:
       retries: 3
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.7
+        ipv4_address: 192.168.114.106
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -76,7 +76,7 @@ services:
       retries: 3
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.8
+        ipv4_address: 192.168.114.107
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -93,7 +93,7 @@ services:
       retries: 3
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.12
+        ipv4_address: 192.168.114.108
     restart: always
   deluge:
     image: linuxserver/deluge
@@ -115,7 +115,7 @@ services:
       retries: 3
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.15
+        ipv4_address: 192.168.114.109
   jackett:
     image: ghcr.io/linuxserver/jackett
     container_name: jackett
@@ -136,7 +136,7 @@ services:
       retries: 3
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.9
+        ipv4_address: 192.168.114.110
 networks: 
   docker-net-0:
     external: true
