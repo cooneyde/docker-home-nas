@@ -12,8 +12,8 @@ services:
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
-      - /share/containers/volumes/adguardhome/workdir:/opt/adguardhome/work
-      - /share/containers/volumes/adguardhome/confdir:/opt/adguardhome/conf
+      - /volume1/Docker/volumes/adguardhome/workdir:/opt/adguardhome/work
+      - /volume1/Docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
     restart: always
   # pihole:
   #   container_name: pihole
