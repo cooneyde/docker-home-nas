@@ -5,7 +5,7 @@ services:
     container_name: plex
     hostname: cooneyde
     networks: 
-      docker-net-0-test:
+      docker-net-0:
         ipv4_address: 192.168.114.6
     environment:
       - PUID=1000
@@ -13,10 +13,10 @@ services:
       - UMASK_SET=022
       - VERSION=docker
     volumes:
-      - /share/containers/volumes/plex:/config
-      - /share/Multimedia/video/tv-shows:/tv
-      - /share/Multimedia/video/Movies:/movies
-      - /share/Multimedia/transcode:/transcode
+      - /volume1/Docker/volumes/plex:/config
+      - /volume1/Video/tv-shows:/tv
+      - /volume1/Video/Movies:/movies
+      - /volume1/video/transcode:/transcode
     restart: always
     devices:
       - /dev/dri:/dev/dri
@@ -33,9 +33,9 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /share/containers/volumes/radarr:/config
-      - /share/Multimedia/video/Movies:/movies
-      - /share/Download:/downloads
+      - /volume1/Docker/volumes/radarr:/config
+      - /volume1/Video/Movies:/movies
+      - /volume1/Download:/downloads
     ports:
       - 7878:7878
     restart: always
@@ -62,9 +62,9 @@ services:
     ports:
       - 8989:8989
     volumes:
-      - /share/containers/volumes/sonarr:/config
-      - /share/Multimedia/video/tv-shows:/tv
-      - /share/Download:/downloads
+      - /volume1/Docker/volumes/sonarr:/config
+      - /volume1/Video/tv-shows:/tv
+      - /volume1/Download:/downloads
     restart: always
     depends_on:
       - jackett
@@ -85,7 +85,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /share/containers/volumes/overseerr/config:/config
+      - /volume1/Docker/volumes/overseerr/config:/config
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5055"]
       interval: 1m30s
@@ -103,8 +103,8 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /share/containers/volumes/deluge:/config
-      - /share/Download:/downloads
+      - /volume1/Docker/volumes/deluge:/config
+      - /volume1/Download:/downloads
     ports:
       - 8112:8112
     restart: always
@@ -124,8 +124,8 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /share/containers/volumes/jackett:/config
-      - /share/Download:/downloads
+      - /volume1/Docker/volumes/jackett:/config
+      - /volume1/Download:/downloads
     ports:
       - 9117:9117
     restart: always
@@ -138,7 +138,5 @@ services:
       docker-net-0:
         ipv4_address: 192.168.114.9
 networks: 
-  docker-net-0-test:
-    external: true
   docker-net-0:
     external: true

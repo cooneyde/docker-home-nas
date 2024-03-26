@@ -8,7 +8,7 @@ services:
       - 1.1.1.1
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.4 #static address you want on the container
+        ipv4_address: 192.168.114.101 #static address you want on the container
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
@@ -47,13 +47,13 @@ services:
       - 1.1.1.1
     networks: 
       docker-net-0:
-        ipv4_address: 192.168.114.5
+        ipv4_address: 192.168.114.100
     ports:
       - 80:9000
     entrypoint: /portainer -p :80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /share/containers/volumes/portainer:/data
+      - /volume1/Docker/volumes/portainer:/data
 networks: 
   docker-net-0:
     external: true  
