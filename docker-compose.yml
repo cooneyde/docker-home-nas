@@ -42,9 +42,9 @@ services:
     container_name: portainer
     image: portainer/portainer-ee
     restart: always
-    dns:
-      - 127.0.0.1
-      - 1.1.1.1
+    # dns:
+    #   - 127.0.0.1
+    #   - 1.1.1.1
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.100
