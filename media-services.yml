@@ -137,6 +137,26 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.110
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      -  /volume1/Docker/volume/sprowlarr/data:/config
+    restart: always
+    ports:
+      - 9696:9696
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9696"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.111
 networks: 
   docker-net-0:
     external: true
