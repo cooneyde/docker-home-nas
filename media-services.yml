@@ -40,8 +40,8 @@ services:
       - 7878:7878
     restart: always
     depends_on:
-      - jackett
       - deluge
+      - prowlarr
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7878"]
       interval: 1m30s
@@ -67,7 +67,7 @@ services:
       - /volume1/Download:/downloads
     restart: always
     depends_on:
-      - jackett
+      - prowlarr
       - deluge
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8989"]
