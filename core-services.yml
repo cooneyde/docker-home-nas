@@ -21,8 +21,8 @@ services:
       docker-net-0:
         ipv4_address: 192.168.114.101
     volumes:
-      - /volume3/container-data/volumes/nginx-proxy-manager/data:/data
-      - /volume3/container-data/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
+      - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
+      - /volume1/Docker/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
       - /volume1/.@plugins/AppCentral/letsencrypt/.CertBot/config/live:/etc/ssl
     depends_on:
       - nginx-db
@@ -39,7 +39,7 @@ services:
       docker-net-0: 
         ipv4_address: 192.168.114.102
     volumes:
-      - /volume3/container-data/volumes/mysql:/var/lib/mysql
+      - /volume1/Docker/volumes/mysql:/var/lib/mysql
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower

@@ -4,7 +4,7 @@ services:
     container_name: homeassistant
     image: homeassistant/home-assistant:stable
     volumes:
-      - /volume3/container-data/volumes/homeassistant:/config
+      - /volume1/Docker/volumes/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
     restart: always
     dns:

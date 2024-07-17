@@ -12,8 +12,8 @@ services:
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
-      - /volume3/container-data/volumes/adguardhome/workdir:/opt/adguardhome/work
-      - /volume3/container-data/volumes/adguardhome/confdir:/opt/adguardhome/conf
+      - /volume1/Docker/volumes/adguardhome/workdir:/opt/adguardhome/work
+      - /volume1/Docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
     restart: always
   # pihole:
   #   container_name: pihole
@@ -53,7 +53,7 @@ services:
     entrypoint: /portainer -p :9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /volume3/container-data/volumes/portainer:/data
+      - /volume1/Docker/volumes/portainer:/data
 networks: 
   docker-net-0:
     external: true  
