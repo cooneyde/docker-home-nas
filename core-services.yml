@@ -52,6 +52,7 @@ services:
     image: grafana/grafana-enterprise
     container_name: grafana
     restart: unless-stopped
+    user: 1000
     environment:
      - GF_INSTALL_PLUGINS=grafana-clock-panel
     networks: 
