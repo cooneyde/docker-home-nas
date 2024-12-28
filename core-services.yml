@@ -48,20 +48,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 21600
     restart: always
-  grafana:
-    image: grafana/grafana-enterprise
-    container_name: grafana
-    restart: unless-stopped
-    user: 1000
-    environment:
-     - GF_INSTALL_PLUGINS=grafana-clock-panel
-    networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.103
-    ports:
-     - '3000:3000'
-    volumes:
-     - '/volume1/Docker/volumes/grafana:/var/lib/grafana'
+
   # nextcloud:
   #   image: nextcloud
   #   container_name: nextcloud
