@@ -2,10 +2,12 @@ version: "3.8"
 services:
   homeassistant:
     container_name: homeassistant
-    image: homeassistant/home-assistant:stable
+    image: ghcr.io/home-assistant/home-assistant:stable
     volumes:
       - /volume1/Docker/volumes/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    privileged: true
     restart: always
     dns:
       - 127.0.0.1
