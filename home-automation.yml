@@ -8,9 +8,14 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     privileged: true
-    restart: always    
-    network_mode: host
-  
+    restart: always
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1     
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.104
+
   matter-server:
     container_name: matter-server
     image: ghcr.io/home-assistant-libs/python-matter-server:stable
@@ -20,8 +25,10 @@ services:
     volumes:
       - /volume1/Docker/volumes/matter-server:/data
       - /run/dbus:/run/dbus:ro
-    network_mode: host
-    privileged: true
+    privileged: true 
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.105
 networks: 
   docker-net-0:
     external: true
