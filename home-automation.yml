@@ -18,7 +18,7 @@ services:
     security_opt:
       - apparmor=unconfined
     volumes:
-      - /volume1/Docker//matter-server:/data
+      - /volume1/Docker/matter-server:/data
       - /run/dbus:/run/dbus:ro
     network_mode: host
 networks: 
