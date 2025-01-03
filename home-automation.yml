@@ -12,7 +12,7 @@ services:
     privileged: true
     restart: always
     dns:
-      - 127.0.0.1
+      - 192.168.114.4
       - 1.1.1.1     
     networks: 
       docker-net-0:
