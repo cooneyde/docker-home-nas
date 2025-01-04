@@ -1,12 +1,9 @@
 services:
   homeassistant:
     container_name: homeassistant
-    image: lscr.io/linuxserver/homeassistant:latest
-    network_mode: host
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
+    image: ghcr.io/home-assistant/home-assistant:stable
+    #ports:
+    #  - 8123:8123
     volumes:
       - /volume1/Docker/volumes/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
@@ -15,6 +12,10 @@ services:
     devices:
       - /dev/ttyUSB0:/dev/ttyUSB0
     restart: always
+    #network_mode: host
+    networks: 
+      bridge-net-0:
+        ipv4_address: 172.16.1.10
 
   matter-server:
     container_name: matter-server
