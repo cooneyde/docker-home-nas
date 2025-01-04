@@ -57,3 +57,8 @@ services:
 networks: 
   docker-net-0:
     external: true  
+  bridge-net-0:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.1.0/24

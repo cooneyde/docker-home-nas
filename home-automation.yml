@@ -15,8 +15,8 @@ services:
       - 192.168.114.4
       - 1.1.1.1     
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.104
+      bridge-net-0::
+        ipv4_address: 172.16.1.10
 
   matter-server:
     container_name: matter-server
@@ -29,8 +29,8 @@ services:
       - /run/dbus:/run/dbus:ro
     privileged: true 
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.105
+      bridge-net-0:
+        ipv4_address: 172.16.1.11
 networks: 
-  docker-net-0:
+  bridge-net-0:
     external: true

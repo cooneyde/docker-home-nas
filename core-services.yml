@@ -1,12 +1,12 @@
 version: '3'
 services: 
   nginx-proxy:
-    container_name: nginx-proxy
+    container_name: nginxProxy
     restart: always
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
-      - '80:80'
-      - '81:81'
+      - 80:80
+      - 81:81
     environment:
       DB_MYSQL_HOST: "nginx-db"
       DB_MYSQL_PORT: 3306
@@ -20,7 +20,7 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.101
-      spike-bridge-net: {}
+      bridge-net-0: {}
     volumes:
       - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
       - /volume1/Docker/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
@@ -28,7 +28,7 @@ services:
     depends_on:
       - nginx-db
   nginx-db:
-    container_name: nginx-db
+    container_name: nginxDb
     restart: always
     image: 'jc21/mariadb-aria:latest'
     environment:
