@@ -3,16 +3,13 @@ services:
     container_name: homeassistant
     image: ghcr.io/home-assistant/home-assistant:stable
     ports:
-      - 12300:8123
+      - 8123:8123
     volumes:
       - /volume1/Docker/volumes/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     privileged: true
     restart: always
-    dns:
-      - 192.168.114.4
-      - 1.1.1.1     
     networks: 
       bridge-net-0:
         ipv4_address: 172.16.1.10
