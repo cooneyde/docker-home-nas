@@ -10,9 +10,10 @@ services:
       - /run/dbus:/run/dbus:ro
     privileged: true
     restart: always
-    networks: 
-      bridge-net-0:
-        ipv4_address: 172.16.1.10
+    network_mode: host
+    # networks: 
+    #   bridge-net-0:
+    #     ipv4_address: 172.16.1.10
 
   matter-server:
     container_name: matter-server
