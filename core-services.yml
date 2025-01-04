@@ -20,6 +20,7 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.101
+      spike-bridge-net: {}
     volumes:
       - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
       - /volume1/Docker/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt
@@ -77,4 +78,6 @@ networks:
   docker-net-0:
     external: true
   docker-net-1:
+    external: true
+  spike-bridge-net: 
     external: true
