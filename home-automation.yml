@@ -3,7 +3,7 @@ services:
     container_name: homeassistant
     image: ghcr.io/home-assistant/home-assistant:stable
     ports:
-      - 81230:8123
+      - 12300:8123
     volumes:
       - /volume1/Docker/volumes/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
