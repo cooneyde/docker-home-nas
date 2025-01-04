@@ -15,7 +15,7 @@ services:
       - 192.168.114.4
       - 1.1.1.1     
     networks: 
-      bridge-net-0::
+      bridge-net-0:
         ipv4_address: 172.16.1.10
 
   matter-server:
