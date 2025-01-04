@@ -79,5 +79,5 @@ networks:
     external: true
   docker-net-1:
     external: true
-  spike-bridge-net: 
+  bridge-net-0: 
     external: true
