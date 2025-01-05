@@ -9,6 +9,7 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.4 #static address you want on the container
+      bridge-net-0: {}
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
