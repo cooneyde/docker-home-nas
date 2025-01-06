@@ -9,13 +9,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     privileged: true
-    devices:
-      - /dev/ttyUSB0:/dev/ttyUSB0
+    # devices:
+    #   - /dev/ttyUSB0:/dev/ttyUSB0
     restart: always
-    #network_mode: host
-    networks: 
-      bridge-net-0:
-        ipv4_address: 172.16.1.10
+    network_mode: host
+    # networks: 
+    #   bridge-net-0:
+    #     ipv4_address: 172.16.1.10
 
   matter-server:
     container_name: matter-server
