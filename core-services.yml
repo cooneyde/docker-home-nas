@@ -23,8 +23,8 @@ services:
       bridge-net-0: {}
     volumes:
       - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
-      - /etc/ssl/certs:/etc/letsencrypt
-      - /volume1/.@plugins/AppCentral/letsencrypt/.CertBot/config/live:/etc/ssl
+      - /usr/builtin/etc/certificate:/etc/ssl/certs
+      - /volume1/.@plugins/AppCentral/letsencrypt/.CertBot/config/live:/etc/letsencrypt:ro
 
     depends_on:
       - nginx-db
