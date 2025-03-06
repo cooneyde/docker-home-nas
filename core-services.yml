@@ -61,7 +61,7 @@ services:
     environment:
       CURL_CA_BUNDLE: "/etc/ssl/certs/ssl.crt"
       SSL_CERT_FILE: "/etc/ssl/certs/ssl.crt"
-      DB_MYSQL_HOST: "npm-external-db"
+      DB_MYSQL_HOST: "127.0.0.1"
       DB_MYSQL_PORT: 3366
       DB_MYSQL_USER: "npm_ext"
       DB_MYSQL_PASSWORD: "npm_ext_pass"
