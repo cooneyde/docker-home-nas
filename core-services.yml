@@ -59,6 +59,8 @@ services:
     #   - 443:443
     #   - 8181:81
     environment:
+      CURL_CA_BUNDLE: "/etc/ssl/certs/ssl.crt"
+      SSL_CERT_FILE: "/etc/ssl/certs/ssl.crt"
       DB_MYSQL_HOST: "npm-external-db"
       DB_MYSQL_PORT: 3306
       DB_MYSQL_USER: "npm_ext"
