@@ -54,10 +54,10 @@ services:
     container_name: npmExternal
     restart: always
     image: 'jc21/nginx-proxy-manager:latest'
-    # ports:
-    #   - 8081:80
-    #   - 443:443
-    #   - 8181:81
+    ports:
+      - 8081:80
+      - 443:443
+      - 8181:81
     environment:
       DB_MYSQL_HOST: "npm-external-db"
       DB_MYSQL_PORT: 3306
@@ -65,9 +65,6 @@ services:
       DB_MYSQL_PASSWORD: "npm_ext_pass"
       DB_MYSQL_NAME: "npm_external"
       DISABLE_IPV6: true
-    # networks:
-    #   bridge-net-0: {}
-    network_mode: host
     volumes:
       - /volume1/Docker/volumes/npm-external/data:/data
       - /volume1/Docker/volumes/npm-external/letsencrypt:/etc/letsencrypt
