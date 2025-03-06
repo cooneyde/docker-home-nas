@@ -62,7 +62,7 @@ services:
       CURL_CA_BUNDLE: "/etc/ssl/certs/ssl.crt"
       SSL_CERT_FILE: "/etc/ssl/certs/ssl.crt"
       DB_MYSQL_HOST: "npm-external-db"
-      DB_MYSQL_PORT: 3306
+      DB_MYSQL_PORT: 3366
       DB_MYSQL_USER: "npm_ext"
       DB_MYSQL_PASSWORD: "npm_ext_pass"
       DB_MYSQL_NAME: "npm_external"
@@ -83,13 +83,15 @@ services:
     container_name: npmExternalDb
     restart: always
     image: 'jc21/mariadb-aria:latest'
+    ports:
+      - "3366:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 'npm_ext_root_pass'
       MYSQL_DATABASE: 'npm_external'
       MYSQL_USER: 'npm_ext'
       MYSQL_PASSWORD: 'npm_ext_pass'
-    networks:
-      bridge-net-0: {}
+    # networks:
+    #   bridge-net-0: {}
     volumes:
       - /volume1/Docker/volumes/npm-external/mysql:/var/lib/mysql
 
