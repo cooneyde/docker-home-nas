@@ -65,6 +65,10 @@ services:
       DB_MYSQL_PASSWORD: "npm_ext_pass"
       DB_MYSQL_NAME: "npm_external"
       DISABLE_IPV6: true
+    networks:
+      docker-net-0:
+        ipv4_address: 192.168.114.125
+      bridge-net-0: {}
     volumes:
       - /volume1/Docker/volumes/npm-external/data:/data
       - /volume1/Docker/volumes/npm-external/letsencrypt:/etc/letsencrypt
