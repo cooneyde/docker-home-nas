@@ -71,6 +71,7 @@ services:
       bridge-net-0: {}
     volumes:
       - /volume1/Docker/volumes/npm-external/data:/data
+      - /usr/builtin/etc/certificate:/etc/ssl/certs
       - /volume1/Docker/volumes/npm-external/letsencrypt:/etc/letsencrypt
     depends_on:
       - npm-external-db
