@@ -106,6 +106,8 @@ services:
     volumes:
       - /volume1/Docker/volumes/nginx-external/config:/config
       - /usr/builtin/etc/certificate:/etc/ssl/certs
+      - /usr/builtin/etc/certificate:/config/keys
+
     network_mode: host
     # ports:
     #   - 80:80
