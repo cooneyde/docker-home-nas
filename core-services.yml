@@ -105,8 +105,8 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /volume1/Docker/volumes/nginx-external/config:/config
-      - /usr/builtin/etc/certificate:/etc/ssl/certs
-      - /usr/builtin/etc/certificate:/config/keys
+      - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
+      - /usr/builtin/etc/certificate:/config/keys:ro
 
     network_mode: host
     # ports:
