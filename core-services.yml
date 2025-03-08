@@ -54,6 +54,11 @@ services:
     container_name: nginx-external
     restart: always
     image: lscr.io/linuxserver/nginx:latest
+    networks:
+      - bridge-net-0: {}
+    ports:
+      - 80:80
+      - 443:443
     environment:
       - PUID=1000
       - PGID=1000
@@ -62,7 +67,6 @@ services:
       - /volume1/Docker/volumes/nginx-external/config:/config
       - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
       - /usr/builtin/etc/certificate:/config/keys:ro
-    network_mode: host
   
   # nextcloud:
   #   image: nextcloud
