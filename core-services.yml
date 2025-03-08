@@ -50,51 +50,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 21600
     restart: always
-  npm-external:
-    container_name: npmExternal
-    restart: always
-    image: 'jc21/nginx-proxy-manager:latest'
-    ports:
-      - 8081:80
-      - 4443:443
-      - 8181:81
-    environment:
-      CURL_CA_BUNDLE: "/etc/ssl/certs/ssl.crt"
-      SSL_CERT_FILE: "/etc/ssl/certs/ssl.crt"
-      DB_MYSQL_HOST: "127.0.0.1"
-      DB_MYSQL_PORT: 3366
-      DB_MYSQL_USER: "npm_ext"
-      DB_MYSQL_PASSWORD: "npm_ext_pass"
-      DB_MYSQL_NAME: "npm_external"
-      DISABLE_IPV6: true
-    # network_mode: host
-    # networks:
-    #   docker-net-0:
-    #     ipv4_address: 192.168.114.125
-    #   bridge-net-0: {}
-    volumes:
-      - /volume1/Docker/volumes/npm-external/data:/data
-      - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
-      - /usr/builtin/etc/certificate:/config/keys/certs:ro
-      - /volume1/Docker/volumes/npm-external/letsencrypt:/etc/letsencrypt
-    depends_on:
-      - npm-external-db
-  npm-external-db:
-    container_name: npmExternalDb
-    restart: always
-    image: 'jc21/mariadb-aria:latest'
-    ports:
-      - "3366:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: 'npm_ext_root_pass'
-      MYSQL_DATABASE: 'npm_external'
-      MYSQL_USER: 'npm_ext'
-      MYSQL_PASSWORD: 'npm_ext_pass'
-    # networks:
-    #   bridge-net-0: {}
-    volumes:
-      - /volume1/Docker/volumes/npm-external/mysql:/var/lib/mysql
-
   nginx-external:
     container_name: nginx-external
     restart: always
@@ -107,11 +62,7 @@ services:
       - /volume1/Docker/volumes/nginx-external/config:/config
       - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
       - /usr/builtin/etc/certificate:/config/keys:ro
-
     network_mode: host
-    # ports:
-    #   - 80:80
-    #   - 443:443
   
   # nextcloud:
   #   image: nextcloud
