@@ -68,7 +68,7 @@ services:
       - /usr/builtin/etc/certificate:/config/keys:ro
   
   nextcloud-test:
-    image: nextcloud
+    image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud-test
     networks: 
       docker-net-0: 
@@ -85,7 +85,8 @@ services:
     ports:
       - 32680:80
     volumes:
-      - /volume1/Docker/volumes/nextcloud/data:/var/www/html
+      - /volume1/Docker/volumes/nextcloud/data:/data
+      - /volume1/Docker/volumes/nextcloud/config:/config
     restart: always
     depends_on:
       - nextcloud-db
