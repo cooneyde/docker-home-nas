@@ -74,6 +74,14 @@ services:
       docker-net-0: 
         ipv4_address: 192.168.114.116
       bridge-net-0: {}
+    environment:
+      - MYSQL_HOST=nextcloud-db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=my-next-bicycle-cloud
+      - OVERWRITEPROTOCOL=http
+      - OVERWRITEWEBROOT=/nextcloud
+      - OVERWRITECLIURL=http://192.168.114.2:32680/nextcloud
     ports:
       - 32680:80
     volumes:
