@@ -94,6 +94,7 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.108
+      bridge-net-0: {}
     restart: always
   deluge:
     image: linuxserver/deluge
@@ -136,6 +137,9 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.111
+      bridge-net-0: {}
 networks: 
   docker-net-0:
+    external: true
+  bridge-net-0:
     external: true
