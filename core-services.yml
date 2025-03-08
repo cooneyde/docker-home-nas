@@ -55,7 +55,7 @@ services:
     restart: always
     image: lscr.io/linuxserver/nginx:latest
     networks:
-      - bridge-net-0: {}
+      bridge-net-0: {}
     ports:
       - 80:80
       - 443:443
