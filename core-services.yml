@@ -95,6 +95,8 @@ services:
     image: mariadb
     container_name: nextcloud-db
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    networks:
+      bridge-net-0: {}
     ports:
       - 6606:3306
     volumes:
