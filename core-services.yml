@@ -72,7 +72,7 @@ services:
     container_name: nextcloud-test
     networks: 
       docker-net-0: 
-        ipv4_address: 192.168.114.16
+        ipv4_address: 192.168.114.116
       bridge-net-0: {}
     ports:
       - 32680:80
