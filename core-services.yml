@@ -5,8 +5,8 @@ services:
     restart: always
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
-      - 8000:80
-      - 8181:81
+      - 80:80
+      - 81:81
     environment:
       DB_MYSQL_HOST:  "nginx-internal-db"
       DB_MYSQL_PORT: 3306
