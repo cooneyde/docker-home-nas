@@ -1,14 +1,14 @@
 version: '3'
 services: 
-  nginx-proxy:
-    container_name: nginxProxy
+  nginx-internal:
+    container_name: nginx-internal
     restart: always
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
       - 8000:80
-      - 8100:81
+      - 8181:81
     environment:
-      DB_MYSQL_HOST: "nginx-db"
+      DB_MYSQL_HOST:  "nginx-internal-db"
       DB_MYSQL_PORT: 3306
       DB_MYSQL_USER: "npm"
       DB_MYSQL_PASSWORD: "npm"
@@ -25,11 +25,10 @@ services:
       - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
       - /usr/builtin/etc/certificate:/etc/ssl/certs
       - /volume1/.@plugins/AppCentral/letsencrypt/.CertBot/config/live:/etc/letsencrypt
-
     depends_on:
-      - nginx-db
-  nginx-db:
-    container_name: nginxDb
+      - nginx-internal-db
+  nginx-internal-db:
+    container_name: nginx-internal-db
     restart: always
     image: 'jc21/mariadb-aria:latest'
     environment:
@@ -68,30 +67,33 @@ services:
       - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
       - /usr/builtin/etc/certificate:/config/keys:ro
   
-  # nextcloud:
-  #   image: nextcloud
-  #   container_name: nextcloud
-  #   networks: 
-  #     docker-net-0: 
-  #       ipv4_address: 192.168.114.16
-  #   volumes:
-  #     - /share/containers/volumes/nextcloud/data:/var/www/html
-  #   restart: always
-  #   depends_on:
-  #     - nextcloud-db
+  nextcloud-test:
+    image: nextcloud
+    container_name: nextcloud-test
+    networks: 
+      docker-net-0: 
+        ipv4_address: 192.168.114.16
+      bridge-net-0: {}
+    ports:
+      - 32680:80
+    volumes:
+      - /volume1/Docker/volumes/nextcloud/data:/var/www/html
+    restart: always
+    depends_on:
+      - nextcloud-db
   
-  # nextcloud-db:
-  #   image: mariadb
-  #   container_name: nextcloud-db
-  #   command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-  #   volumes:
-  #     - /share/containers/volumes/nextcloud/database:/var/lib/mysql
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=my-cool-bicycle
-  #     - MYSQL_DATABASE=nextcloud
-  #     - MYSQL_USER=nextcloud
-  #     - MYSQL_PASSWORD=my-next-bicycle-cloud
-  #   restart: always
+  nextcloud-db:
+    image: mariadb
+    container_name: nextcloud-db
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - /volume1/Docker/volumes/nextcloud/database:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=my-cool-bicycle
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=my-next-bicycle-cloud
+    restart: always
 networks: 
   docker-net-0:
     external: true
