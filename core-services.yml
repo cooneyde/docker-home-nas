@@ -95,6 +95,8 @@ services:
     image: mariadb
     container_name: nextcloud-db
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    ports:
+      - 6606:3306
     volumes:
       - /volume1/Docker/volumes/nextcloud/database:/var/lib/mysql
     environment:
