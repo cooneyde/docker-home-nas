@@ -45,6 +45,11 @@ services:
         ipv4_address: 192.168.114.102
     volumes:
       - /volume1/Docker/volumes/mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "npm", "-pnpm"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
@@ -52,6 +57,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 21600
+    healthcheck:
+      test: ["CMD", "ps", "aux", "|", "grep", "watchtower", "||", "exit", "1"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
     restart: always
   nginx-external:
     container_name: nginx-external
@@ -88,7 +98,7 @@ services:
       - /volume1/Docker/volumes/nextcloud/data:/data
       - /volume1/Docker/volumes/nextcloud/config:/config
     healthcheck:
-      test: 'runuser -s /usr/local/bin/php - abc /var/www/html/occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
+      test: 'occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
       interval: 60s
       retries: 5
       start_period: 10s
@@ -133,7 +143,10 @@ services:
     networks:
       bridge-net-0: {}
     healthcheck:
-      test: redis-cli ping || exit 1
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 networks: 
   docker-net-0:
     external: true
