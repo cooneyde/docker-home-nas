@@ -105,6 +105,12 @@ services:
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=my-next-bicycle-cloud
     restart: always
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    networks:
+      bridge-net-0: {}
 networks: 
   docker-net-0:
     external: true
