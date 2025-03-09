@@ -14,7 +14,6 @@ services:
       DB_MYSQL_USER: "npm"
       DB_MYSQL_PASSWORD: "npm"
       DB_MYSQL_NAME: "npm"
-      DISABLE_IPV6: true
     dns:
       - 127.0.0.1
       - 1.1.1.1
