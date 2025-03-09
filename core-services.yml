@@ -109,6 +109,10 @@ services:
     image: redis:alpine
     container_name: redis
     restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
     networks:
       bridge-net-0: {}
 networks: 
