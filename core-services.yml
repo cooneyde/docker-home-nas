@@ -8,6 +8,7 @@ services:
       - 80:80
       - 81:81
     environment:
+      DISABLE_IPV6: 'true'
       DB_MYSQL_HOST:  "nginx-internal-db"
       DB_MYSQL_PORT: 3306
       DB_MYSQL_USER: "npm"
