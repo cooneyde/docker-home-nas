@@ -81,7 +81,7 @@ services:
       - /volume1/Docker/volumes/nextcloud/data:/data
       - /volume1/Docker/volumes/nextcloud/config:/config
     healthcheck:
-      test: 'runuser -s /usr/local/bin/php - www-data /var/www/html/occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
+      test: 'runuser -s /usr/local/bin/php - abc /var/www/html/occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
       interval: 60s
       retries: 5
       start_period: 10s
