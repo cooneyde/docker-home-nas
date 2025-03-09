@@ -68,7 +68,7 @@ services:
   
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
-    container_name: nextcloud-test
+    container_name: nextcloud
     networks: 
       bridge-net-0: {}
     environment:
