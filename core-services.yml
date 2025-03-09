@@ -96,6 +96,7 @@ services:
       - "6606:3306"
     volumes:
       - /volume1/Docker/volumes/nextcloud/database:/var/lib/mysql
+      - /volume1/Docker/volumes/nextcloud/database/conf.d:/etc/mysql/conf.d
     environment:
       - PUID=1000
       - PGID=1000
