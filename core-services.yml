@@ -87,7 +87,7 @@ services:
       - nextcloud-db
   
   nextcloud-db:
-    image: 'jc21/mariadb-aria:latest'
+    image: lscr.io/linuxserver/mariadb:latest
     container_name: nextcloud-db
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks:
@@ -95,8 +95,11 @@ services:
     ports:
       - "6606:3306"
     volumes:
-      - /volume1/Docker/volumes/nextcloud/database:/var/lib/mysql
+      - /volume1/Docker/volumes/nextcloud/database/config:/config
     environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
       - MYSQL_ROOT_PASSWORD=my-cool-bicycle
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
