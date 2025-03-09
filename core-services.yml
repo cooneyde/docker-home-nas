@@ -77,7 +77,6 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - PHP_MEMORY_LIMIT=2G
     ports:
       - 32680:80
     volumes:
