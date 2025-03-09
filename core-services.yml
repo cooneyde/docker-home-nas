@@ -87,7 +87,7 @@ services:
       - nextcloud-db
   
   nextcloud-db:
-    image: mariadb
+    image: mariadb:lts
     container_name: nextcloud-db
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks:
