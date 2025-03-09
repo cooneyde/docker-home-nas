@@ -25,6 +25,10 @@ services:
       - /volume1/Docker/volumes/nginx-proxy-manager/data:/data
       - /usr/builtin/etc/certificate:/etc/ssl/certs
       - /volume1/.@plugins/AppCentral/letsencrypt/.CertBot/config/live:/etc/letsencrypt
+    healthcheck:
+      test: ["CMD", "/usr/bin/check-health"]
+      interval: 10s
+      timeout: 3s
     depends_on:
       - nginx-internal-db
   nginx-internal-db:
@@ -51,7 +55,6 @@ services:
     restart: always
   nginx-external:
     container_name: nginx-external
-    restart: always
     image: lscr.io/linuxserver/nginx:latest
     networks:
       bridge-net-0: {}
@@ -65,7 +68,11 @@ services:
       - /volume1/Docker/volumes/nginx-external/config:/config
       - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
       - /usr/builtin/etc/certificate:/config/keys:ro
-  
+    healthcheck:
+      test: ["CMD-SHELL", "wget -O /dev/null http://localhost || exit 1"]
+      timeout: 10s
+    restart: always
+
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
