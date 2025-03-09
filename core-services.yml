@@ -115,6 +115,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
+    volumes:
+      - /volume1/Docker/volumes/redis/data:/data
     networks:
       bridge-net-0: {}
 networks: 
