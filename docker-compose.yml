@@ -12,8 +12,8 @@ services:
       - 8081:80/tcp # http web interface
       - 3000:3000/tcp # initial setup web interface
     networks: 
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.4 #static address you want on the container
+      docker-net-0:
+        ipv4_address: 192.168.114.4 #static address you want on the container
       bridge-net-0: {}
     environment: 
       TZ: 'Europe/Dublin'
