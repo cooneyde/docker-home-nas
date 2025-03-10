@@ -46,7 +46,7 @@ services:
     volumes:
       - /volume1/Docker/volumes/mysql:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "npm", "-pnpm"]
+      test: "mysqladmin ping -h localhost -u npm -p npm"
       interval: 10s
       timeout: 5s
       retries: 3
@@ -123,6 +123,11 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=my-next-bicycle-cloud
+    healthcheck:
+      test: "mariadb ping -h localhost -u nextcloud -p 'my-next-bicycle-cloud'"
+      interval: 10s
+      timeout: 5s
+      retries: 3
     restart: always
   redis:
     image: redis:alpine
