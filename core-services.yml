@@ -34,7 +34,7 @@ services:
   nginx-internal-db:
     container_name: nginx-internal-db
     restart: always
-    image: 'jc21/mariadb-aria:latest'
+    image: mariadb:lts
     environment:
       MYSQL_ROOT_PASSWORD: 'npm'
       MYSQL_DATABASE: 'npm'
