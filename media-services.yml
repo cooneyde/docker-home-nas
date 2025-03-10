@@ -131,7 +131,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      -  /volume1/Docker/volume/sprowlarr/data:/config
+      -  /volume1/Docker/volumes/prowlarr/data:/config
     restart: always
     ports:
       - 9696:9696
