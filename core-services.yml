@@ -46,7 +46,7 @@ services:
     volumes:
       - /volume1/Docker/volumes/mysql:/var/lib/mysql
     healthcheck:
-      test: "mysqladmin ping -h localhost -u npm -p npm"
+      test: "healthcheck.sh --connect --innodb_initialized"
       interval: 10s
       timeout: 5s
       retries: 3
@@ -124,7 +124,7 @@ services:
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=my-next-bicycle-cloud
     healthcheck:
-      test: "mariadb ping -h localhost -u nextcloud -p 'my-next-bicycle-cloud'"
+      test: "healthcheck.sh --connect --innodb_initialized"
       interval: 10s
       timeout: 5s
       retries: 3
