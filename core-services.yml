@@ -34,7 +34,7 @@ services:
   nginx-internal-db:
     container_name: nginx-internal-db
     restart: always
-    image: mariadb:lts
+    image: 'jc21/mariadb-aria:latest'
     environment:
       PUID: 1000
       PGID: 1000
