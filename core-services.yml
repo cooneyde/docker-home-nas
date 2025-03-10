@@ -74,8 +74,10 @@ services:
       - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
       - /usr/builtin/etc/certificate:/config/keys:ro
     healthcheck:
-      test: ["CMD", "curl -fk https://localhost || exit 1"]
-      timeout: 10s
+      test: "curl -fk https://localhost"
+      interval: 10s
+      timeout: 5s
+      retries: 3
     restart: always
 
   nextcloud:
