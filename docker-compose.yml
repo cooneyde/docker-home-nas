@@ -9,7 +9,7 @@ services:
     ports:
       - 53:53/tcp # plain dns over tcp
       - 53:53/udp # plain dns over udp
-      - 80:80/tcp # http web interface
+      - 8081:80/tcp # http web interface
       - 3000:3000/tcp # initial setup web interface
     networks: 
       # docker-net-0:
