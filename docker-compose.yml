@@ -6,9 +6,14 @@ services:
     dns:
       - 127.0.0.1
       - 1.1.1.1
+    ports:
+      - 53:53/tcp # plain dns over tcp
+      - 53:53/udp # plain dns over udp
+      - 80:80/tcp # http web interface
+      - 3000:3000/tcp # initial setup web interface
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.4 #static address you want on the container
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.4 #static address you want on the container
       bridge-net-0: {}
     environment: 
       TZ: 'Europe/Dublin'
@@ -47,8 +52,8 @@ services:
       - 127.0.0.1
       - 1.1.1.1
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.100
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.100
       bridge-net-0: {}
     ports:
       - 9000:9000
