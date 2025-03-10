@@ -36,8 +36,8 @@ services:
     restart: always
     image: 'jc21/mariadb-aria:latest'
     environment:
-      PUID: 1000
-      PGID: 1000
+      # PUID: 1000
+      # PGID: 1000
       MYSQL_ROOT_PASSWORD: 'npm'
       MYSQL_DATABASE: 'npm'
       MYSQL_USER: 'npm'
