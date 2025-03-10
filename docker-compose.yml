@@ -49,6 +49,7 @@ services:
     networks: 
       docker-net-0:
         ipv4_address: 192.168.114.100
+      bridge-net-0: {}
     ports:
       - 9000:9000
     entrypoint: /portainer -p :9000

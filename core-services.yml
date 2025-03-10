@@ -43,8 +43,7 @@ services:
       MYSQL_USER: 'npm'
       MYSQL_PASSWORD: 'npm'
     networks: 
-      docker-net-0: 
-        ipv4_address: 192.168.114.102
+      bridge-net-0: {}
     volumes:
       - /volume1/Docker/volumes/nginx-proxy-manager/database:/var/lib/mysql
     healthcheck:
@@ -153,8 +152,6 @@ services:
       retries: 3
 networks: 
   docker-net-0:
-    external: true
-  docker-net-1:
     external: true
   bridge-net-0: 
     external: true
