@@ -36,6 +36,8 @@ services:
     restart: always
     image: mariadb:lts
     environment:
+      PUID: 1000
+      PGID: 1000
       MYSQL_ROOT_PASSWORD: 'npm'
       MYSQL_DATABASE: 'npm'
       MYSQL_USER: 'npm'
