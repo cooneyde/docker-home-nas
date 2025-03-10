@@ -5,8 +5,9 @@ services:
     container_name: plex
     hostname: cooneyde
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.6
+      bridge-net-0: {}
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.6
     environment:
       - PUID=1000
       - PGID=1000
@@ -21,8 +22,8 @@ services:
     devices:
       - /dev/dri:/dev/dri
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:32400/identity"]
-      interval: 1m30s
+      test: "curl -f http://localhost:32400/identity"
+      interval: 10s
       timeout: 10s
       retries: 3
   radarr:
@@ -43,13 +44,14 @@ services:
       - deluge
       - prowlarr
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7878"]
-      interval: 1m30s
+      test: "curl -f http://localhost:7878"
+      interval: 10s
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.106
+      bridge-net-0: {}
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.106
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -70,13 +72,14 @@ services:
       - prowlarr
       - deluge
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8989"]
-      interval: 1m30s
+      test: "curl -f http://localhost:8989"
+      interval: 10s
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.107
+      bridge-net-0: {}
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.107
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -89,13 +92,13 @@ services:
     volumes:
       - /volume1/Docker/volumes/overseerr/config:/config
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5055"]
-      interval: 1m30s
+      test: "curl -f http://localhost:5055"
+      interval: 10s
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.108
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.108
       bridge-net-0: {}
     restart: always
   deluge:
@@ -112,13 +115,14 @@ services:
       - 8112:8112
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8112"]
-      interval: 1m30s
+      test: "curl -f http://localhost:8112"
+      interval: 10s
       timeout: 10s
       retries: 3
-    networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.109
+    networks:
+      bridge-net-0: {} 
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.109
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
@@ -132,13 +136,13 @@ services:
     ports:
       - 9696:9696
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9696"]
-      interval: 1m30s
+      test: "curl -f http://localhost:9696"
+      interval: 10s
       timeout: 10s
       retries: 3
     networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.111
+      # docker-net-0:
+      #   ipv4_address: 192.168.114.111
       bridge-net-0: {}
 networks: 
   docker-net-0:

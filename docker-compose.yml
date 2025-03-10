@@ -61,6 +61,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /volume1/Docker/volumes/portainer:/data
+    healthcheck:
+      test: "portainer --healthcheck"
+      interval: 10s
+      timeout: 5s
+      retries: 3
 networks: 
   docker-net-0:
     external: true  

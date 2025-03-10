@@ -146,7 +146,7 @@ services:
     networks:
       bridge-net-0: {}
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: "redis-cli ping"
       interval: 10s
       timeout: 5s
       retries: 3
