@@ -3,13 +3,7 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    hostname: cooneyde
-    ports:
-      - 32400:32400
-    networks: 
-      bridge-net-0: {}
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.6
+    network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
