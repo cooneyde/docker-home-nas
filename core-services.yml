@@ -186,7 +186,7 @@ services:
       - PEERS=ABlaptop,ABphone,DBmac,DBphone #add new devices with commas, then volume 1 and use the .conf file with the matching folder name for client
     volumes:
       - /volume1/Docker/volumes/wireshark/config:/config
-      - /volume1/Docker/volumes//wireshark/modules:/lib/modules
+      - /volume1/Docker/volumes/wireshark/modules:/lib/modules
     ports:
       - 51820:51820/udp
     sysctls:
