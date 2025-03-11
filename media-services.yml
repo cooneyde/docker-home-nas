@@ -4,6 +4,8 @@ services:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
     hostname: cooneyde
+    ports:
+      - 32400:32400
     networks: 
       bridge-net-0: {}
       # docker-net-0:
