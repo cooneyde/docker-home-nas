@@ -178,15 +178,16 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     environment:
-      - PUID=1000 #docktool user
+      - PUID=1000
       - PGID=1000
       - TZ=Europe/Dublin
       - SERVERURL=cooneyde.myasustor.com #optional
       - SERVERPORT=51820 #optional
-      - PEERS=ABlaptop,ABphone,DBmac,DBphone #add new devices with commas, then volume 1 and use the .conf file with the matching folder name for client
+      - PEERDNS=192.168.114.2
+      - PEERS=DClaptop,DCphone
     volumes:
-      - /volume1/Docker/volumes/wireshark/config:/config
-      - /volume1/Docker/volumes/wireshark/modules:/lib/modules
+      - /volume1/Docker/volumes/wireguard/config:/config
+      - /volume1/Docker/volumes/wireguard/modules:/lib/modules
     ports:
       - 51820:51820/udp
     sysctls:
