@@ -1,49 +1,5 @@
 version: "3"
 services:
-  adguard:
-    container_name: adguard
-    image: adguard/adguardhome
-    dns:
-      - 127.0.0.1
-      - 1.1.1.1
-    ports:
-      - 53:53/tcp # plain dns over tcp
-      - 53:53/udp # plain dns over udp
-      - 8081:80/tcp # http web interface
-      - 3000:3000/tcp # initial setup web interface
-    networks: 
-      docker-net-0:
-        ipv4_address: 192.168.114.4 #static address you want on the container
-      bridge-net-0: {}
-    environment: 
-      TZ: 'Europe/Dublin'
-    volumes: 
-      - /volume1/Docker/volumes/adguardhome/workdir:/opt/adguardhome/work
-      - /volume1/Docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
-    restart: always
-  # pihole:
-  #   container_name: pihole
-  #   image: pihole/pihole:latest
-  #   volumes:
-  #     - '/share/containers/volumes/pihole/etc/:/etc/pihole/'
-  #     - '/share/containers/volumes/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
-  #   environment:
-  #     TZ: Europe/Dublin
-  #     SERVERIP: 192.168.114.3 #IP of the NAS
-  #   dns:
-  #     - 127.0.0.1
-  #     - 1.1.1.1
-  #   networks: 
-  #     docker-net-0:
-  #       ipv4_address: 192.168.114.4 #static address you want on the container
-  #   cap_add: 
-  #     - NET_ADMIN
-  #   restart: unless-stopped
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost"]
-  #     interval: 1m30s
-  #     timeout: 10s
-  #     retries: 3
   portainer:
     container_name: portainer
     image: portainer/portainer-ee
@@ -52,8 +8,6 @@ services:
       - 127.0.0.1
       - 1.1.1.1
     networks: 
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.100
       bridge-net-0: {}
     ports:
       - 9000:9000
@@ -67,7 +21,5 @@ services:
       timeout: 5s
       retries: 3
 networks: 
-  docker-net-0:
-    external: true  
   bridge-net-0:
     external: true

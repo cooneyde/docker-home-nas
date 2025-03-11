@@ -1,5 +1,26 @@
 version: '3'
-services: 
+services:
+  adguard:
+    container_name: adguard
+    image: adguard/adguardhome
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    ports:
+      - 53:53/tcp # plain dns over tcp
+      - 53:53/udp # plain dns over udp
+      - 8081:80/tcp # http web interface
+      - 3000:3000/tcp # initial setup web interface
+    networks: 
+      docker-net-0:
+        ipv4_address: 192.168.114.4 #static address you want on the container
+      bridge-net-0: {}
+    environment: 
+      TZ: 'Europe/Dublin'
+    volumes: 
+      - /volume1/Docker/volumes/adguardhome/workdir:/opt/adguardhome/work
+      - /volume1/Docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
+    restart: always
   nginx-internal:
     container_name: nginx-internal
     restart: always
