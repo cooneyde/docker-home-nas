@@ -171,6 +171,28 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+  wireguard: #VPN into home network
+    image: ghcr.io/linuxserver/wireguard
+    container_name: Wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000 #docktool user
+      - PGID=1000
+      - TZ=Europe/Dublin
+      - SERVERURL=cooneyde.myasustor.com #optional
+      - SERVERPORT=51820 #optional
+      - PEERS=ABlaptop,ABphone,DBmac,DBphone #add new devices with commas, then volume 1 and use the .conf file with the matching folder name for client
+    volumes:
+      - /volume1/Docker/volumes/wireshark/config:/config
+      - /volume1/Docker/volumes//wireshark/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: always
+
 networks: 
   docker-net-0:
     external: true
