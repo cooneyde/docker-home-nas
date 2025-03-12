@@ -19,7 +19,7 @@ services:
     volumes:
       # Do not edit the next line. If you want to change the media storage location on your system, edit the value of UPLOAD_LOCATION in the .env file
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /volume1/Docker/volumes/nextcloud/data/cooneyde/files/InstantUpload:/mnt/media/old_media:ro
+      - /volume1/Docker/volumes/nextcloud/data/cooneyde/files/InstantUpload:/mnt/media:ro
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
