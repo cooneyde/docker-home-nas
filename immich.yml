@@ -21,6 +21,8 @@ services:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /volume1/Docker/volumes/nextcloud/data/cooneyde/files/InstantUpload:/mnt/media:ro
       - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/dri:/dev/dri
     env_file:
       - .env
     networks: 
@@ -38,10 +40,10 @@ services:
     container_name: immich_machine_learning
     # For hardware acceleration, add one of -[armnn, cuda, openvino] to the image tag.
     # Example tag: ${IMMICH_VERSION:-release}-cuda
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
-    # extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
-    #   file: hwaccel.ml.yml
-    #   service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-OpenVINO
+    extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
+      file: hwaccel.ml.yml
+      service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
     networks: 
       bridge-net-0: {}
     volumes:
