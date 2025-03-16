@@ -202,7 +202,7 @@ services:
   ports:
     - 8083:8080
   networks:
-    - bridge-net-0: {}
+    bridge-net-0: {}
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
   restart: always  
