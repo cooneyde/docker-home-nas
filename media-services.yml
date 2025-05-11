@@ -22,23 +22,16 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-  tvheadend:
-    image: lscr.io/linuxserver/tvheadend:latest
-    container_name: tvheadend
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
+  xteve:
+    image: alturismo/xteve
+    container_name: xteve
+    ports:
+      - 34400:34400
     volumes:
-      - /volume1/Docker/volumes/tvheadend/data:/config
-      - /volume1/Video/recordings:/recordings
-    network_mode: host
-    # ports:
-    #   - 9981:9981
-    #   - 9982:9982
-    devices:
-      - /dev/dri:/dev/dri #optional
+      - /volume1/Docker/volumes/xteve:/config
     restart: unless-stopped
+    networks:
+        bridge-net-0: {}
   radarr:
     image: linuxserver/radarr
     container_name: radarr
