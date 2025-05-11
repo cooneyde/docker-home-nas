@@ -32,9 +32,10 @@ services:
     volumes:
       - /volume1/Docker/volumes/tvheadend/data:/config
       - /volume1/Video/recordings:/recordings
-    ports:
-      - 9981:9981
-      - 9982:9982
+    network_mode: host
+    # ports:
+    #   - 9981:9981
+    #   - 9982:9982
     devices:
       - /dev/dri:/dev/dri #optional
     restart: unless-stopped
