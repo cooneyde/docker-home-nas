@@ -31,7 +31,7 @@ services:
       - TZ=Etc/UTC
     volumes:
       - /volume1/Docker/volumes/tvheadend/data:/config
-      - /volume1/Docker/volumes/media/recordings:/recordings
+      - /volume1/Video/recordings:/recordings
     ports:
       - 9981:9981
       - 9982:9982
