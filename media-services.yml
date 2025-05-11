@@ -22,19 +22,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-  threadfin:
-    image: fyb3roptik/threadfin
-    container_name: threadfin
-    ports:
-      - 34400:34400
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-    volumes:
-      - /volume1/Docker/volumes/threadfin/data/conf:/home/threadfin/conf
-      - /volume1/Docker/volumes/threadfin/data/temp:/tmp/threadfin:rw
-    restart: unless-stopped
   radarr:
     image: linuxserver/radarr
     container_name: radarr
