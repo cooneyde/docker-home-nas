@@ -96,7 +96,7 @@ services:
       - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
       - /usr/builtin/etc/certificate:/config/keys:ro
     healthcheck:
-      test: "curl -fk https://localhost"
+      test: "curl -fk https://localhost:443"
       interval: 10s
       timeout: 5s
       retries: 3
