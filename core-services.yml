@@ -184,10 +184,9 @@ services:
       - SERVERURL=cooneyde.myasustor.com #optional
       - SERVERPORT=51820 #optional
       - PEERDNS=192.168.114.2
-      - INTERNAL_SUBNET=10.13.13.0  # tunnel network (default is fine; just don’t overlap your LAN)
-      - ALLOWEDIPS=10.13.13.0/24,192.168.112.0/22
-      - PERSISTENTKEEPALIVE_PEERS=all
       - PEERS=DClaptop,DCphone
+      - INTERNAL_SUBNET=10.13.13.0/24  # WireGuard internal network
+      - ALLOWEDIPS=0.0.0.0/0  # Allow all traffic through VPN
     volumes:
       - /volume1/Docker/volumes/wireguard/config:/config
       - /volume1/Docker/volumes/wireguard/modules:/lib/modules
