@@ -174,7 +174,7 @@ services:
       retries: 3
   wg-easy:
     image: ghcr.io/wg-easy/wg-easy
-    container_name: wg-easy
+    container_name: wireguard
     network_mode: host
     environment:
       - WG_HOST=cooneyde.myasustor.com
