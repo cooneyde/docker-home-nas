@@ -174,7 +174,6 @@ services:
   wireguard: #VPN into home network
     image: ghcr.io/linuxserver/wireguard
     container_name: Wireguard
-    network_mode: host
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
