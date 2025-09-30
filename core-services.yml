@@ -176,7 +176,7 @@ services:
     container_name: wg-easy
     environment:
       - WG_HOST=cooneyde.myasustor.com
-      - WG_DEFAULT_DNS=192.168.114.2
+      - WG_DEFAULT_DNS=192.168.114.1
       - WG_ALLOWED_IPS=192.168.112.0/22
       - WG_PORT=51820
     volumes:
