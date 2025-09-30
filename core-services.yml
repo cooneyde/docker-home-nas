@@ -177,8 +177,7 @@ services:
     environment:
       - WG_HOST=cooneyde.myasustor.com
       - WG_DEFAULT_DNS=192.168.114.1
-      - WG_ALLOWED_IPS=192.168.112.0/22,10.13.13.0/24
-      - WG_DEFAULT_ADDRESS=10.13.13.x
+      - WG_ALLOWED_IPS=192.168.112.0/22
       - WG_PORT=51820
     volumes:
       - /volume1/Docker/volumes/wg-easy:/etc/wireguard
