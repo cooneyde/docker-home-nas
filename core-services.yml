@@ -183,7 +183,7 @@ services:
       - TZ=Europe/Dublin
       - SERVERURL=cooneyde.myasustor.com #optional
       - SERVERPORT=51820 #optional
-      - PEERDNS=192.168.114.1
+      - PEERDNS=192.168.114.2
       - PEERS=DClaptop,DCphone
       - INTERNAL_SUBNET=10.13.13.0/24  # WireGuard internal network
       - ALLOWEDIPS=0.0.0.0/0  # Allow all traffic through VPN
