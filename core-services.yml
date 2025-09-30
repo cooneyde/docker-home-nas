@@ -183,17 +183,13 @@ services:
       - TZ=Europe/Dublin
       - SERVERURL=cooneyde.myasustor.com #optional
       - SERVERPORT=51820 #optional
-      - PEERDNS=192.168.114.2
+      - PEERDNS=192.168.114.1
       - PEERS=DClaptop,DCphone
       - INTERNAL_SUBNET=10.13.13.0/24  # WireGuard internal network
       - ALLOWEDIPS=0.0.0.0/0  # Allow all traffic through VPN
     volumes:
       - /volume1/Docker/volumes/wireguard/config:/config
       - /volume1/Docker/volumes/wireguard/modules:/lib/modules
-    ports:
-      - 51820:51820/udp
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
     restart: always
   dozzle:
     image: amir20/dozzle:latest
