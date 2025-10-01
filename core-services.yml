@@ -212,7 +212,7 @@ services:
       - /path/to/config:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
     environment:
-      HOMEPAGE_ALLOWED_HOSTS: cooneyde.myasustor.com,192.168.114.2
+      HOMEPAGE_ALLOWED_HOSTS: cooneyde.myasustor.com:3001,192.168.114.2:3001
     networks:
       bridge-net-0: {}
 networks: 
