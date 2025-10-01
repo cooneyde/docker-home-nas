@@ -212,6 +212,8 @@ services:
       - /volume1/Docker/volumes/homarr/appdata:/appdata
     ports:
       - '7575:7575'
+    environment:
+      - SECRET_ENCRYPTION_KEY=68d03ffe3802c0d08821d3c83dd3c8de42d4255caa20744b380e12d6dcea5084
     networks:
       bridge-net-0: {}
 networks: 
