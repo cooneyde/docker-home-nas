@@ -226,6 +226,12 @@ services:
       bridge-net-0: {}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - homepage.group=Networking
+      - homepage.name=Logs
+      - homepage.icon=dozzle.png
+      - homepage.href=http://192.168.114.2:8083/
+      - homepage.description=Docker container logs
     restart: always  
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -238,12 +244,7 @@ services:
       - /volume1/Docker/volumes/homepage/config:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: always
-    labels:
-      - homepage.group=Networking
-      - homepage.name=Logs
-      - homepage.icon=dozzle.png
-      - homepage.href=http://192.168.114.2:8083/
-      - homepage.description=Docker container logs
+    
     networks:
       bridge-net-0: {}
 
