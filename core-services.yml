@@ -203,19 +203,34 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: always  
-  homarr:
-    container_name: homarr
-    image: ghcr.io/homarr-labs/homarr:latest
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
-      - /volume1/Docker/volumes/homarr/appdata:/appdata
-    ports:
-      - '7575:7575'
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
     environment:
-      - SECRET_ENCRYPTION_KEY=68d03ffe3802c0d08821d3c83dd3c8de42d4255caa20744b380e12d6dcea5084
-    networks:
-      bridge-net-0: {}
+      HOMEPAGE_ALLOWED_HOSTS: dashboard.home.com:3001,192.168.114.2:3001
+      PUID: 1000
+      PGID: 1000
+    ports:
+      - 3001:3000
+    volumes:
+      - /volume1/Docker/volumes/homepage/config:/app/config # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
+    restart: always
+
+  # homarr:
+  #   container_name: homarr
+  #   image: ghcr.io/homarr-labs/homarr:latest
+  #   restart: unless-stopped
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+  #     - /volume1/Docker/volumes/homarr/appdata:/appdata
+  #   ports:
+  #     - '7575:7575'
+  #   environment:
+  #     - SECRET_ENCRYPTION_KEY=68d03ffe3802c0d08821d3c83dd3c8de42d4255caa20744b380e12d6dcea5084
+  #   networks:
+  #     bridge-net-0: {}
+
 networks: 
   docker-net-0:
     external: true
