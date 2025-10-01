@@ -25,7 +25,7 @@ services:
       - homepage.group=Networking
       - homepage.name=Adguard
       - homepage.icon=adguard.png
-      - homepage.href=http://adguard/
+      - homepage.href=http://192.168.114.4/
       - homepage.description=DNS Server
     restart: always
   nginx-internal:
@@ -140,7 +140,7 @@ services:
       - homepage.group=Media
       - homepage.name=Nextcloud
       - homepage.icon=nextcloud.png
-      - homepage.href=http://nextcloud:32680/
+      - homepage.href=http://192.168.114.2:32680/
       - homepage.description=Media server
     depends_on:
       - nextcloud-db
