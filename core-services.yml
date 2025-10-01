@@ -236,10 +236,10 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
+    user: "0:0"
     environment:
       HOMEPAGE_ALLOWED_HOSTS: dashboard.home.com,192.168.114.2:3001
-      PUID: 1000
-      PGID: 1000
+    
     ports:
       - 3001:3000
     volumes:
