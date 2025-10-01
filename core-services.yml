@@ -209,7 +209,7 @@ services:
     ports:
       - 3001:3000
     volumes:
-      - /path/to/config:/app/config # Make sure your local config directory exists
+      - /volume1/Docker/volumes/homepage:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
     environment:
       HOMEPAGE_ALLOWED_HOSTS: cooneyde.myasustor.com:3001,192.168.114.2:3001,dashboard.home.com
