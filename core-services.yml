@@ -175,31 +175,21 @@ services:
   wg-easy:
     image: ghcr.io/wg-easy/wg-easy
     container_name: wireguard
-    # network_mode: host
+    network_mode: host
     environment:
       - WG_HOST=cooneyde.myasustor.com
       - WG_DEFAULT_DNS=192.168.114.4,1.1.1.1
       - WG_ALLOWED_IPS=0.0.0.0/0
       - WG_PORT=51820
-      - WG_POST_UP=/usr/sbin/iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE; /usr/sbin/iptables -A FORWARD -i wg0 -j ACCEPT; /usr/sbin/iptables -A FORWARD -o wg0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-      - WG_POST_DOWN=/usr/sbin/iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE; /usr/sbin/iptables -D FORWARD -i wg0 -j ACCEPT; /usr/sbin/iptables -D FORWARD -o wg0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     volumes:
       - /volume1/Docker/volumes/wg-easy:/etc/wireguard
       - /lib/modules:/lib/modules:ro
-    networks:
-      bridge-net-0: {}
     ports:
       - 51820:51820/udp
       - 51821:51821/tcp  # Web UI
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    sysctls:
-      - net.ipv4.ip_forward=1
-      - net.ipv4.conf.all.src_valid_mark=1
-      - net.ipv6.conf.all.disable_ipv6=0
-      - net.ipv6.conf.all.forwarding=1
-      - net.ipv6.conf.default.forwarding=1
     restart: always
   dozzle:
     image: amir20/dozzle:latest
