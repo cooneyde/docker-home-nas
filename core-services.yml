@@ -21,12 +21,6 @@ services:
     volumes: 
       - /volume1/Docker/volumes/adguardhome/workdir:/opt/adguardhome/work
       - /volume1/Docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
-    labels:
-      - homepage.group=Networking
-      - homepage.name=Adguard
-      - homepage.icon=adguard.png
-      - homepage.href=http://192.168.114.4/
-      - homepage.description=DNS Server
     restart: always
   nginx-internal:
     container_name: nginx-internal
