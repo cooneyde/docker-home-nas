@@ -20,6 +20,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+  monitoring:
+    image: nicolargo/glances:ubuntu-latest-full
+    pid: host
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "GLANCES_OPT=-w"
 networks: 
   bridge-net-0:
     external: true
