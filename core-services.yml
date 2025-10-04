@@ -5,7 +5,7 @@ services:
     image: adguard/adguardhome
     dns:
       - 127.0.0.1
-      - 1ok.1.1.1
+      - 1.1.1.1
     ports:
       - 53:53/tcp # plain dns over tcp
       - 53:53/udp # plain dns over udp
