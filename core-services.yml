@@ -141,7 +141,7 @@ services:
       - homepage.name=Nextcloud
       - homepage.icon=nextcloud.png
       - homepage.href=http://192.168.114.2:32680/
-      - homepage.description=Media server
+      - homepage.description=Nextcloud cloud storage
     depends_on:
       - nextcloud-db
   
@@ -193,7 +193,7 @@ services:
   wg-easy:
     image: ghcr.io/wg-easy/wg-easy
     container_name: wireguard
-    network_mode: host
+    # network_mode: host
     environment:
       - WG_HOST=cooneyde.myasustor.com
       - WG_DEFAULT_DNS=192.168.114.1,1.1.1.1
@@ -214,6 +214,12 @@ services:
       - homepage.icon=wireguard.png
       - homepage.href=http://192.168.114.2:51821/
       - homepage.description=VPN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.forwarding=1
+    networks: 
+      bridge-net-0: {}
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
@@ -239,7 +245,6 @@ services:
     user: "0:0"
     environment:
       HOMEPAGE_ALLOWED_HOSTS: dashboard.home.com,192.168.114.2:3001
-    
     ports:
       - 3001:3000
     volumes:
