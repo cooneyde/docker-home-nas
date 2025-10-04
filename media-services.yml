@@ -23,6 +23,10 @@ services:
     restart: always
     devices:
       - /dev/dri:/dev/dri
+    networks:
+      bridge-net-0: {}
+    ports:
+      - 32400:32400
     healthcheck:
       test: "curl -f http://localhost:32400/identity"
       interval: 10s
