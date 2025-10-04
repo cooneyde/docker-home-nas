@@ -199,6 +199,8 @@ services:
       - WG_DEFAULT_DNS=192.168.114.1,1.1.1.1
       - WG_ALLOWED_IPS=0.0.0.0/0
       - WG_PORT=51820
+      - WG_POST_UP=iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE; iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+      - WG_POST_DOWN=iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE; iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
     volumes:
       - /volume1/Docker/volumes/wg-easy:/etc/wireguard
     ports:
