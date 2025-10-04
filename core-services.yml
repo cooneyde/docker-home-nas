@@ -59,12 +59,6 @@ services:
       timeout: 3s
     depends_on:
       - nginx-internal-db
-    labels:
-      - homepage.group=Networking
-      - homepage.name=Nginx-internal
-      - homepage.icon=nginx.png
-      - homepage.href=http://192.168.114.101:81/
-      - homepage.description=Internal Containers reverse proxy
   nginx-internal-db:
     container_name: nginx-internal-db
     restart: always
