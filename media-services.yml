@@ -26,7 +26,17 @@ services:
     networks:
       bridge-net-0: {}
     ports:
-      - 32400:32400
+      - 32400:32400/tcp
+      # Optional but recommended for local discovery/casting:
+      - 32410:32410/udp    # GDM discovery
+      - 32412:32412/udp
+      - 32413:32413/udp
+      - 32414:32414/udp
+      - 8324:8324/tcp      # Plex Companion (remote app control)
+      - 3005:3005/tcp      # Companion legacy
+      # DLNA (only if you actually use DLNA):
+      - 1900:1900/udp      # SSDP
+      - 32469:32469/tcp    # DLNA
     healthcheck:
       test: "curl -f http://localhost:32400/identity"
       interval: 10s
