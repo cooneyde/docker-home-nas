@@ -3,12 +3,13 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    # network_mode: host
+    network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
       - UMASK_SET=022
       - VERSION=docker
+      - ADVERTISE_IP=http://cooneyde.myasustor.com:32400,http://192.168.114.2:32400
     volumes:
       - /volume1/Docker/volumes/plex:/config
       - /volume1/Video/tv-shows:/tv
@@ -23,20 +24,15 @@ services:
     restart: always
     devices:
       - /dev/dri:/dev/dri
-    networks:
-      bridge-net-0: {}
-    ports:
-      - 32400:32400/tcp
-      # Optional but recommended for local discovery/casting:
-      - 32410:32410/udp    # GDM discovery
-      - 32412:32412/udp
-      - 32413:32413/udp
-      - 32414:32414/udp
-      - 8324:8324/tcp      # Plex Companion (remote app control)
-      - 3005:3005/tcp      # Companion legacy
-      # DLNA (only if you actually use DLNA):
-      - 1900:1900/udp      # SSDP
-      - 32469:32469/tcp    # DLNA
+    # networks:
+    #   bridge-net-0: {}
+    # ports:
+    #   - 32400:32400/tcp    # Core Plex (required)
+    #   - 32410:32410/udp    # GDM discovery (optional but helpful)
+    #   - 32412:32412/udp
+    #   - 32413:32413/udp
+    #   - 32414:32414/udp
+    #   - 8324:8324/tcp
     healthcheck:
       test: "curl -f http://localhost:32400/identity"
       interval: 10s
