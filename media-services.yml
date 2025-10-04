@@ -15,12 +15,6 @@ services:
       - /volume1/Video/tv-shows:/tv
       - /volume1/Video/Movies:/movies
       - /volume1/Video/transcode:/transcode
-    labels:
-      - homepage.group=Media
-      - homepage.name=Plex
-      - homepage.icon=plex.png
-      - homepage.href=http://192.168.114.2:32400/
-      - homepage.description=Plex Media Server
     restart: always
     devices:
       - /dev/dri:/dev/dri
@@ -70,12 +64,6 @@ services:
     depends_on:
       - deluge
       - prowlarr
-    labels:
-      - homepage.group=Media
-      - homepage.name=radarr
-      - homepage.icon=radarr.png
-      - homepage.href=http://192.168.114.2:7878/
-      - homepage.description=Radarr - movies
     healthcheck:
       test: "curl -f http://localhost:7878"
       interval: 10s
@@ -105,12 +93,6 @@ services:
     depends_on:
       - prowlarr
       - deluge
-    labels:
-      - homepage.group=Media
-      - homepage.name=Sonarr
-      - homepage.icon=sonarr.png
-      - homepage.href=http://192.168.114.2:8989/
-      - homepage.description=Sonarr - tv
     healthcheck:
       test: "curl -f http://localhost:8989"
       interval: 10s
@@ -137,12 +119,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-    labels:
-      - homepage.group=Media
-      - homepage.name=overseerr
-      - homepage.icon=overseerr.png
-      - homepage.href=http://192.168.114.2:5055/
-      - homepage.description=Overseerr - requests
     networks: 
       # docker-net-0:
       #   ipv4_address: 192.168.114.108
@@ -167,12 +143,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-    labels:
-      - homepage.group=Media
-      - homepage.name=Deluge
-      - homepage.icon=deluge.png
-      - homepage.href=http://192.168.114.2:8112/
-      - homepage.description=Deluge - Torrent Client
     networks:
       bridge-net-0: {} 
       # docker-net-0:
@@ -195,12 +165,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-    labels:
-      - homepage.group=Media
-      - homepage.name=Prowlarr
-      - homepage.icon=prowlarr.png
-      - homepage.href=http://192.168.114.2:9696/
-      - homepage.description=Prowlarr Indexer Manager
     networks: 
       # docker-net-0:
       #   ipv4_address: 192.168.114.111

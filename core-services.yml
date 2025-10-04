@@ -136,12 +136,6 @@ services:
       start_period: 10s
       timeout: 10s
     restart: always
-    labels:
-      - homepage.group=Media
-      - homepage.name=Nextcloud
-      - homepage.icon=nextcloud.png
-      - homepage.href=http://192.168.114.2:32680/
-      - homepage.description=Nextcloud cloud storage
     depends_on:
       - nextcloud-db
   
@@ -208,12 +202,6 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     restart: always
-    labels:
-      - homepage.group=Networking
-      - homepage.name=wireguard
-      - homepage.icon=wireguard.png
-      - homepage.href=http://192.168.114.2:51821/
-      - homepage.description=VPN
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
@@ -226,12 +214,6 @@ services:
       bridge-net-0: {}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      - homepage.group=Networking
-      - homepage.name=Logs
-      - homepage.icon=dozzle.png
-      - homepage.href=http://192.168.114.2:8083/
-      - homepage.description=Docker container logs
     restart: always  
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
