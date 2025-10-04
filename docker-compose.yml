@@ -24,7 +24,11 @@ services:
     image: nicolargo/glances:ubuntu-latest-full
     container_name: monitoring
     pid: host
-    network_mode: host
+    # network_mode: host
+    ports:
+      - 61208:61208
+    networks:
+      bridge-net-0: {}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
