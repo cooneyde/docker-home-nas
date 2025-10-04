@@ -5,7 +5,7 @@ services:
     image: adguard/adguardhome
     dns:
       - 127.0.0.1
-      - 1.1.1.1
+      - 1ok.1.1.1
     ports:
       - 53:53/tcp # plain dns over tcp
       - 53:53/udp # plain dns over udp
@@ -151,8 +151,8 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks:
       bridge-net-0: {}
-    ports:
-      - "6606:3306"
+    # ports:
+    #   - "6606:3306"
     volumes:
       - /volume1/Docker/volumes/nextcloud/database:/var/lib/mysql
       - /volume1/Docker/volumes/nextcloud/database/conf.d:/etc/mysql/conf.d
@@ -175,8 +175,8 @@ services:
     container_name: redis
     restart: always
     command: ["redis-server", "/data/redis.conf"]
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
     environment:
       - PUID=1000
       - PGID=1000
@@ -196,7 +196,7 @@ services:
     network_mode: host
     environment:
       - WG_HOST=cooneyde.myasustor.com
-      - WG_DEFAULT_DNS=192.168.114.1.1,1.1.1.1
+      - WG_DEFAULT_DNS=192.168.114.1,1.1.1.1
       - WG_ALLOWED_IPS=0.0.0.0/0
       - WG_PORT=51820
     volumes:

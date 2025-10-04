@@ -15,8 +15,14 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /volume1/Docker/volumes/portainer:/data
+    labels:
+      - homepage.group=Networking
+      - homepage.name=Portainer
+      - homepage.icon=portainer.png
+      - homepage.href=http://192.168.114.2:9000/
+      - homepage.description=Portainer
     healthcheck:
-      test: "portainer --healthcheck"
+      test: ["CMD", "/portainer", "--healthcheck"]
       interval: 10s
       timeout: 5s
       retries: 3
