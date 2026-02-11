@@ -57,7 +57,7 @@ services:
     volumes:
       - /volume3/Docker/volumes/radarr:/config
       - /volume1/Video/Movies:/movies
-      - /volume1/Download:/downloads
+      - /volume3/Download:/downloads
     ports:
       - 7878:7878
     restart: always
@@ -88,7 +88,7 @@ services:
     volumes:
       - /volume3/Docker/volumes/sonarr:/config
       - /volume1/Video/tv-shows:/tv
-      - /volume1/Download:/downloads
+      - /volume3/Download:/downloads
     restart: always
     depends_on:
       - prowlarr
@@ -134,7 +134,7 @@ services:
       - PGID=1000
     volumes:
       - /volume3/Docker/volumes/deluge:/config
-      - /volume1/Download:/downloads
+      - /volume3/Download:/downloads
     ports:
       - 8112:8112
     restart: always
