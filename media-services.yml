@@ -11,7 +11,7 @@ services:
       - VERSION=docker
       - ADVERTISE_IP=http://cooneyde.myasustor.com:32400,http://192.168.114.2:32400
     volumes:
-      - /volume1/Docker/volumes/plex:/config
+      - /volume3/Docker/volumes/plex:/config
       - /volume1/Video/tv-shows:/tv
       - /volume1/Video/Movies:/movies
       - /volume1/Video/transcode:/transcode
@@ -55,7 +55,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /volume1/Docker/volumes/radarr:/config
+      - /volume3/Docker/volumes/radarr:/config
       - /volume1/Video/Movies:/movies
       - /volume1/Download:/downloads
     ports:
@@ -86,7 +86,7 @@ services:
     ports:
       - 8989:8989
     volumes:
-      - /volume1/Docker/volumes/sonarr:/config
+      - /volume3/Docker/volumes/sonarr:/config
       - /volume1/Video/tv-shows:/tv
       - /volume1/Download:/downloads
     restart: always
@@ -113,7 +113,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /volume1/Docker/volumes/overseerr/config:/config
+      - /volume3/Docker/volumes/overseerr/config:/config
     healthcheck:
       test: "curl -f http://localhost:5055"
       interval: 10s
@@ -133,7 +133,7 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /volume1/Docker/volumes/deluge:/config
+      - /volume3/Docker/volumes/deluge:/config
       - /volume1/Download:/downloads
     ports:
       - 8112:8112
@@ -156,7 +156,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      -  /volume1/Docker/volumes/prowlarr/data:/config
+      -  /volume3/Docker/volumes/prowlarr/data:/config
     restart: always
     ports:
       - 9696:9696
