@@ -223,8 +223,6 @@ services:
     image: cloudflare/cloudflared:latest
     restart: always
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
-    env_file:
-      - /volume3/Docker/docker-home-nas/.env
     networks:
       bridge-net-0: {}
     logging:
