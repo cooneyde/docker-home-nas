@@ -79,7 +79,7 @@ services:
     network_mode: bridge
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --cleanup --interval 21600
+    command: --cleanup --interval 43200  # 12 hours (43200 seconds)
     restart: always
   nginx-external:
     container_name: nginx-external
@@ -216,10 +216,22 @@ services:
       - /volume3/Docker/volumes/homepage/config:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: always
-    
     networks:
       bridge-net-0: {}
-
+  cloudflared:
+    container_name: cloudflared
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    env_file:
+      - .env
+    networks:
+      bridge-net-0: {}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
   # homarr:
   #   container_name: homarr
   #   image: ghcr.io/homarr-labs/homarr:latest
