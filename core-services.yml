@@ -215,9 +215,6 @@ services:
     volumes:
       - /volume3/Docker/volumes/homepage/config:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
-      - /volume1:/volume1:ro
-      - /volume2:/volume2:ro
-      - /share/USB3-2:/share/USB3-2:ro
     restart: always
     
     networks:
