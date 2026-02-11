@@ -115,7 +115,7 @@ services:
     ports:
       - 32680:80
     volumes:
-      - /volume1/Docker/volumes/nextcloud/data:/data
+      - /volume3/Docker/volumes/nextcloud/data:/data
       - /volume3/Docker/volumes/nextcloud/config:/config
     healthcheck:
       test: 'occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
