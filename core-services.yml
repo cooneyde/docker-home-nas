@@ -81,27 +81,28 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --cleanup --interval 43200  # 12 hours (43200 seconds)
     restart: always
-  nginx-external:
-    container_name: nginx-external
-    image: lscr.io/linuxserver/nginx:latest
-    networks:
-      bridge-net-0: {}
-    ports:
-      - 443:443
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - /volume3/Docker/volumes/nginx-external/config:/config
-      - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
-      - /usr/builtin/etc/certificate:/config/keys:ro
-    healthcheck:
-      test: "curl -fk https://localhost:443"
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    restart: always
+  # Commented out - using cloudflare tunnelling instead
+  # nginx-external:
+  #   container_name: nginx-external
+  #   image: lscr.io/linuxserver/nginx:latest
+  #   networks:
+  #     bridge-net-0: {}
+  #   ports:
+  #     - 443:443
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Etc/UTC
+  #   volumes:
+  #     - /volume3/Docker/volumes/nginx-external/config:/config
+  #     - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
+  #     - /usr/builtin/etc/certificate:/config/keys:ro
+  #   healthcheck:
+  #     test: "curl -fk https://localhost:443"
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+  #   restart: always
 
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
@@ -133,8 +134,6 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     networks:
       bridge-net-0: {}
-    # ports:
-    #   - "6606:3306"
     volumes:
       - /volume3/Docker/volumes/nextcloud/database:/var/lib/mysql
       - /volume3/Docker/volumes/nextcloud/database/conf.d:/etc/mysql/conf.d
@@ -157,8 +156,6 @@ services:
     container_name: redis
     restart: always
     command: ["redis-server", "/data/redis.conf"]
-    # ports:
-    #   - 6379:6379
     environment:
       - PUID=1000
       - PGID=1000
@@ -230,19 +227,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-  # homarr:
-  #   container_name: homarr
-  #   image: ghcr.io/homarr-labs/homarr:latest
-  #   restart: unless-stopped
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
-  #     - /volume1/Docker/volumes/homarr/appdata:/appdata
-  #   ports:
-  #     - '7575:7575'
-  #   environment:
-  #     - SECRET_ENCRYPTION_KEY=68d03ffe3802c0d08821d3c83dd3c8de42d4255caa20744b380e12d6dcea5084
-  #   networks:
-  #     bridge-net-0: {}
 
 networks: 
   docker-net-0:
