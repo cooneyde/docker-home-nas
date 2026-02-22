@@ -188,7 +188,7 @@ services:
     networks:
       bridge-net-0: {}
 networks: 
-  docker-net-0:
+  br0:
     external: true
   bridge-net-0:
     external: true

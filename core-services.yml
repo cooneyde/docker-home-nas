@@ -12,7 +12,7 @@ services:
       - 8081:80/tcp # http web interface
       - 3000:3000/tcp # initial setup web interface
     networks: 
-      docker-net-0:
+      br0:
         ipv4_address: 192.168.114.4 #static address you want on the container
       bridge-net-0: 
         ipv4_address: 172.16.1.99
@@ -40,7 +40,7 @@ services:
       - 127.0.0.1
       - 1.1.1.1
     networks: 
-      docker-net-0:
+      br0:
         ipv4_address: 192.168.114.101
       bridge-net-0: {}
     volumes:
@@ -228,7 +228,7 @@ services:
         max-file: "3"
 
 networks: 
-  docker-net-0:
+  br0:
     external: true
   bridge-net-0: 
     external: true
