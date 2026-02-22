@@ -19,8 +19,8 @@ services:
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
-      - /volume3/Docker/volumes/adguardhome/workdir:/opt/adguardhome/work
-      - /volume3/Docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
+      - /mnt/user/docker/volumes/adguardhome/workdir:/opt/adguardhome/work
+      - /mnt/user/docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
     restart: always
   nginx-internal:
     container_name: nginx-internal
@@ -44,9 +44,8 @@ services:
         ipv4_address: 192.168.114.101
       bridge-net-0: {}
     volumes:
-      - /volume3/Docker/volumes/nginx-proxy-manager/data:/data
+      - /mnt/user/docker/volumes/nginx-proxy-manager/data:/data
       - /usr/builtin/etc/certificate:/etc/ssl/certs
-      - /volume1/.@plugins/AppCentral/letsencrypt/.CertBot/config/live:/etc/letsencrypt
     healthcheck:
       test: ["CMD", "/usr/bin/check-health"]
       interval: 10s
@@ -67,7 +66,7 @@ services:
     networks: 
       bridge-net-0: {}
     volumes:
-      - /volume3/Docker/volumes/nginx-proxy-manager/database:/var/lib/mysql
+      - /mnt/user/docker/volumes/nginx-proxy-manager/database:/var/lib/mysql
     healthcheck:
       test: "healthcheck.sh --connect --innodb_initialized"
       interval: 10s
@@ -94,7 +93,7 @@ services:
   #     - PGID=1000
   #     - TZ=Etc/UTC
   #   volumes:
-  #     - /volume3/Docker/volumes/nginx-external/config:/config
+  #     - /mnt/user/docker/volumes/nginx-external/config:/config
   #     - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
   #     - /usr/builtin/etc/certificate:/config/keys:ro
   #   healthcheck:
@@ -116,8 +115,8 @@ services:
     ports:
       - 32680:80
     volumes:
-      - /volume1/Media/nextcloud/data:/data
-      - /volume3/Docker/volumes/nextcloud/config:/config
+      - /mnt/user/media/nextcloud/data:/data
+      - /mnt/user/docker/volumes/nextcloud/config:/config
     healthcheck:
       test: 'occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
       interval: 60s
@@ -135,8 +134,8 @@ services:
     networks:
       bridge-net-0: {}
     volumes:
-      - /volume3/Docker/volumes/nextcloud/database:/var/lib/mysql
-      - /volume3/Docker/volumes/nextcloud/database/conf.d:/etc/mysql/conf.d
+      - /mnt/user/docker/volumes/nextcloud/database:/var/lib/mysql
+      - /mnt/user/docker/volumes/nextcloud/database/conf.d:/etc/mysql/conf.d
     environment:
       - PUID=1000
       - PGID=1000
@@ -161,7 +160,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /volume3/Docker/volumes/redis/data:/data
+      - /mnt/user/docker/volumes/redis/data:/data
     networks:
       bridge-net-0: {}
     healthcheck:
@@ -179,7 +178,7 @@ services:
       - WG_ALLOWED_IPS=0.0.0.0/0
       - WG_PORT=51820
     volumes:
-      - /volume3/Docker/volumes/wg-easy:/etc/wireguard
+      - /mnt/user/docker/volumes/wg-easy:/etc/wireguard
       - /lib/modules:/lib/modules:ro
     ports:
       - 51820:51820/udp
@@ -210,7 +209,7 @@ services:
     ports:
       - 3001:3000
     volumes:
-      - /volume3/Docker/volumes/homepage/config:/app/config # Make sure your local config directory exists
+      - /mnt/appdata/docker/volumes/homepage/config:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: always
     networks:

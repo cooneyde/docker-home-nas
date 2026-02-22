@@ -9,12 +9,12 @@ services:
       - PGID=1000
       - UMASK_SET=022
       - VERSION=docker
-      - ADVERTISE_IP=http://cooneyde.myasustor.com:32400,http://192.168.114.2:32400
+      - ADVERTISE_IP=http://192.168.114.2:32400
     volumes:
-      - /volume3/Docker/volumes/plex:/config
-      - /volume1/Video/tv-shows:/tv
-      - /volume1/Video/Movies:/movies
-      - /volume1/Video/transcode:/transcode
+      - /mnt/appdata/docker/volumes/plex:/config
+      - /mnt/user/tv:/tv
+      - /mnt/user/movies:/movies
+      - /mnt/user/transcode:/transcode
     restart: always
     devices:
       - /dev/dri:/dev/dri
@@ -55,9 +55,9 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /volume3/Docker/volumes/radarr:/config
-      - /volume1/Video/Movies:/movies
-      - /volume3/Download:/downloads
+      - /mnt/user/docker/volumes/radarr:/config
+      - /mnt/user/movies:/movies
+      - /mnt/user/downloads:/downloads
     ports:
       - 7878:7878
     restart: always
@@ -86,9 +86,9 @@ services:
     ports:
       - 8989:8989
     volumes:
-      - /volume3/Docker/volumes/sonarr:/config
-      - /volume1/Video/tv-shows:/tv
-      - /volume3/Download:/downloads
+      - /mnt/appdata/docker/volumes/sonarr:/config
+      - /mnt/user/tv:/tv
+      - /mnt/user/downloads:/downloads
     restart: always
     depends_on:
       - prowlarr
@@ -113,7 +113,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /volume3/Docker/volumes/overseerr/config:/config
+      - /mnt/user/docker/volumes/overseerr/config:/config
     healthcheck:
       test: "curl -f http://localhost:5055"
       interval: 10s
@@ -133,8 +133,8 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /volume3/Docker/volumes/deluge:/config
-      - /volume3/Download:/downloads
+      - /mnt/appdata/docker/volumes/deluge:/config
+      - /mnt/user/downloads:/downloads
     ports:
       - 8112:8112
     restart: always
@@ -156,7 +156,7 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      -  /volume3/Docker/volumes/prowlarr/data:/config
+      -  /mnt/appdata/docker/volumes/prowlarr/data:/config
     restart: always
     ports:
       - 9696:9696

@@ -14,7 +14,7 @@ services:
     entrypoint: /portainer -p :9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /volume3/Docker/volumes/portainer:/data
+      - /mnt/appdata/docker/volumes/portainer:/data
     healthcheck:
       test: ["CMD", "/portainer", "--healthcheck"]
       interval: 10s

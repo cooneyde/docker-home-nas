@@ -9,7 +9,7 @@ services:
     depends_on:
       - postgres-mealie
     volumes:
-      - /share/containers/volumes/mealie/data/:/app/data/
+      - /mnt/appdata/docker/volumes/mealie/data/:/app/data/
     environment:
     # Set Backend ENV Variables Here
       - ALLOW_SIGNUP=true
@@ -34,7 +34,7 @@ services:
         ipv4_address: 192.168.114.18
     restart: always
     volumes:
-      - /share/containers/volumes/mealie/database:/var/lib/postgresql/data
+      - /mnt/appdata/docker/volumes/mealie/database:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: mealie
       POSTGRES_USER: mealie
