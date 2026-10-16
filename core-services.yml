@@ -1,4 +1,3 @@
-version: '3'
 services:
   adguard:
     container_name: adguard
@@ -10,24 +9,50 @@ services:
       - 53:53/tcp # plain dns over tcp
       - 53:53/udp # plain dns over udp
       - 8081:80/tcp # http web interface
-      - 3000:3000/tcp # initial setup web interface
     networks: 
       br0:
         ipv4_address: 192.168.114.4 #static address you want on the container
-      bridge-net-0: 
-        ipv4_address: 172.16.1.99
+      bridge-net-0: {}
     environment: 
       TZ: 'Europe/Dublin'
     volumes: 
-      - /mnt/user/docker/volumes/adguardhome/workdir:/opt/adguardhome/work
-      - /mnt/user/docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
+      - /mnt/appdata/docker/volumes/adguardhome/workdir:/opt/adguardhome/work
+      - /mnt/appdata/docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/adguard-home.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8081]"
     restart: always
+  backrest:
+    image: garethgeorge/backrest:latest
+    container_name: backrest
+    volumes:
+      - /mnt/appdata/docker/volumes/backrest/config:/config
+      - /mnt/appdata/docker/volumes/backrest/cache:/cache
+      - /mnt/appdata/docker/volumes/backrest/data:/data
+      - /mnt/appdata:/backups/appdata
+      - /mnt/user:/backups/user
+      - /mnt/disks/Seagate_Expansion_Drive:/repos/4tb
+      - /mnt/disks/WCJBZY90-part2:/repos/5tb
+    environment:
+      - BACKREST_DATA=/data
+      - BACKREST_CONFIG=/config/config.json
+      - XDG_CACHE_HOME=/cache
+      - TZ=Europe/Dublin
+    ports:
+      - 9898:9898
+    networks:
+      bridge-net-0: {}
+    restart: always
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/backrest.svg"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:9898]"
+
   nginx-internal:
     container_name: nginx-internal
     restart: always
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
-      - 80:80
+      - 90:80
       - 81:81
     environment:
       DISABLE_IPV6: 'true'
@@ -37,15 +62,18 @@ services:
       DB_MYSQL_PASSWORD: "npm"
       DB_MYSQL_NAME: "npm"
     dns:
-      - 127.0.0.1
       - 1.1.1.1
     networks: 
       br0:
         ipv4_address: 192.168.114.101
       bridge-net-0: {}
     volumes:
-      - /mnt/user/docker/volumes/nginx-proxy-manager/data:/data
-      - /usr/builtin/etc/certificate:/etc/ssl/certs
+      - /mnt/appdata/docker/volumes/nginx-proxy-manager/data:/data
+      - /mnt/appdata/docker/volumes/nginx-proxy-manager/letsencrypt:/etc/letsencrypt 
+      - /etc/ssl/certs:/etc/ssl/certs
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/nginx-proxy-manager.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:81]"
     healthcheck:
       test: ["CMD", "/usr/bin/check-health"]
       interval: 10s
@@ -57,16 +85,22 @@ services:
     restart: always
     image: mariadb:lts
     environment:
-      PUID: 1000
-      PGID: 1000
-      MYSQL_ROOT_PASSWORD: 'npm'
-      MYSQL_DATABASE: 'npm'
-      MYSQL_USER: 'npm'
-      MYSQL_PASSWORD: 'npm'
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=npm
+      - MYSQL_DATABASE=npm
+      - MYSQL_USER=npm
+      - MYSQL_PASSWORD=npm
+      # This variable is specifically read by healthcheck.sh 
+      # It appends these flags to the internal mariadb-admin command
+      - MARIADB_AUTO_UPGRADE=1
+      - MARIADB_HEALTHCHECK_ARGUMENTS=--user=root --password=my-cool-bicycle
     networks: 
       bridge-net-0: {}
     volumes:
-      - /mnt/user/docker/volumes/nginx-proxy-manager/database:/var/lib/mysql
+      - /mnt/appdata/docker/volumes/nginx-proxy-manager/database:/var/lib/mysql
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mariadb.png"
     healthcheck:
       test: "healthcheck.sh --connect --innodb_initialized"
       interval: 10s
@@ -78,31 +112,10 @@ services:
     network_mode: bridge
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/watchtower.png"
     command: --cleanup --interval 43200  # 12 hours (43200 seconds)
     restart: always
-  # Commented out - using cloudflare tunnelling instead
-  # nginx-external:
-  #   container_name: nginx-external
-  #   image: lscr.io/linuxserver/nginx:latest
-  #   networks:
-  #     bridge-net-0: {}
-  #   ports:
-  #     - 443:443
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Etc/UTC
-  #   volumes:
-  #     - /mnt/user/docker/volumes/nginx-external/config:/config
-  #     - /usr/builtin/etc/certificate:/etc/ssl/certs:ro
-  #     - /usr/builtin/etc/certificate:/config/keys:ro
-  #   healthcheck:
-  #     test: "curl -fk https://localhost:443"
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 3
-  #   restart: always
-
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
@@ -111,12 +124,15 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Europe/Dublin
     ports:
       - 32680:80
     volumes:
       - /mnt/user/media/nextcloud/data:/data
-      - /mnt/user/docker/volumes/nextcloud/config:/config
+      - /mnt/appdata/docker/volumes/nextcloud/config:/config
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/nextcloud.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:32680]"
     healthcheck:
       test: 'occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
       interval: 60s
@@ -126,7 +142,6 @@ services:
     restart: always
     depends_on:
       - nextcloud-db
-  
   nextcloud-db:
     image: mariadb:lts
     container_name: nextcloud-db
@@ -134,16 +149,20 @@ services:
     networks:
       bridge-net-0: {}
     volumes:
-      - /mnt/user/docker/volumes/nextcloud/database:/var/lib/mysql
-      - /mnt/user/docker/volumes/nextcloud/database/conf.d:/etc/mysql/conf.d
+      - /mnt/appdata/docker/volumes/nextcloud/database:/var/lib/mysql
+      - /mnt/appdata/docker/volumes/nextcloud/database/conf.d:/etc/mysql/conf.d
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Europe/Dublin
       - MYSQL_ROOT_PASSWORD=my-cool-bicycle
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=my-next-bicycle-cloud
+      - MARIADB_HEALTHCHECK_ARGUMENTS=--user=root --password=my-cool-bicycle
+      - MARIADB_AUTO_UPGRADE=1
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mariadb.png"
     healthcheck:
       test: "healthcheck.sh --connect --innodb_initialized"
       interval: 10s
@@ -158,9 +177,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Europe/Dublin
     volumes:
-      - /mnt/user/docker/volumes/redis/data:/data
+      - /mnt/appdata/docker/volumes/redis/data:/data
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/redis.png"
     networks:
       bridge-net-0: {}
     healthcheck:
@@ -168,25 +189,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-  wg-easy:
-    image: ghcr.io/wg-easy/wg-easy
-    container_name: wireguard
-    network_mode: host
-    environment:
-      - WG_HOST=cooneyde.myasustor.com
-      - WG_DEFAULT_DNS=192.168.114.1,1.1.1.1
-      - WG_ALLOWED_IPS=0.0.0.0/0
-      - WG_PORT=51820
-    volumes:
-      - /mnt/user/docker/volumes/wg-easy:/etc/wireguard
-      - /lib/modules:/lib/modules:ro
-    ports:
-      - 51820:51820/udp
-      - 51821:51821/tcp  # Web UI
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    restart: always
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
@@ -197,28 +199,19 @@ services:
       - 8083:8080
     networks:
       bridge-net-0: {}
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/dozzle.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8083]"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: always  
-  homepage:
-    image: ghcr.io/gethomepage/homepage:latest
-    container_name: homepage
-    user: "0:0"
-    environment:
-      HOMEPAGE_ALLOWED_HOSTS: dashboard.home.com,192.168.114.2:3001
-    ports:
-      - 3001:3000
-    volumes:
-      - /mnt/appdata/docker/volumes/homepage/config:/app/config # Make sure your local config directory exists
-      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
-    restart: always
-    networks:
-      bridge-net-0: {}
   cloudflared:
     container_name: cloudflared
     image: cloudflare/cloudflared:latest
     restart: always
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/cloudflare.png"
     networks:
       bridge-net-0: {}
     logging:

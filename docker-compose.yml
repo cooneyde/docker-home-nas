@@ -1,11 +1,9 @@
-version: "3"
 services:
   portainer:
     container_name: portainer
     image: portainer/portainer-ee
     restart: always
     dns:
-      - 127.0.0.1
       - 1.1.1.1
     networks: 
       bridge-net-0: {}
@@ -15,24 +13,27 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /mnt/appdata/docker/volumes/portainer:/data
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/portainer.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:9000]"
     healthcheck:
       test: ["CMD", "/portainer", "--healthcheck"]
       interval: 10s
       timeout: 5s
       retries: 3
-  monitoring:
-    image: nicolargo/glances:ubuntu-latest-full
-    container_name: monitoring
-    pid: host
-    # network_mode: host
-    ports:
-      - 61208:61208
-    networks:
-      bridge-net-0: {}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - "GLANCES_OPT=-w"
+  # monitoring:
+  #   image: nicolargo/glances:ubuntu-latest-full
+  #   container_name: monitoring
+  #   pid: host
+  #   # network_mode: host
+  #   ports:
+  #     - 61208:61208
+  #   networks:
+  #     bridge-net-0: {}
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     - "GLANCES_OPT=-w"
 networks: 
   bridge-net-0:
     external: true

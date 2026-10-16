@@ -1,0 +1,92 @@
+# ============================================================
+#  IPTV Stack
+#  - Threadfin:    M3U/EPG manager + HDHomeRun emulator
+#  - EPG Grabber:  pulls XMLTV guide data on a schedule
+#  - Jellyfin:     Live TV frontend + media server
+#
+#  Setup order:
+#    1. Start the stack
+#    2. In Threadfin (http://unraid-ip:34400/web), add your provider's
+#       M3U playlist URL and XMLTV/EPG URL
+#    3. Add tuner + guide source in Jellyfin at http://unraid-ip:8096
+# ============================================================
+
+services:
+
+  threadfin:
+    image: fyb3roptik/threadfin:latest
+    container_name: threadfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+    volumes:
+      - /mnt/appdata/docker/volumes/threadfin/conf:/home/threadfin/conf
+    ports:
+      - 34400:34400
+    restart: always
+    networks:
+      bridge-net-0: {}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:34400/web"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/threadfin.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:34400]/web"
+
+  webgrabplus:
+    image: lscr.io/linuxserver/webgrabplus:latest
+    container_name: webgrabplus
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+    volumes:
+      - /mnt/appdata/docker/volumes/webgrabplus/config:/config  # SiteIni.pack + WebGrab++.config.xml live here
+      - /mnt/appdata/docker/volumes/webgrabplus/data:/data      # output guide.xml written here
+    restart: always
+    networks:
+      bridge-net-0: {}
+    # No web UI - runs on a cron schedule defined in /config/WebGrab++.config.xml
+    # Default grab schedule is overnight. Output: /data/guide.xml
+    # WebGrab+ doesn't serve HTTP, so share the file via a volume instead:
+    # Jellyfin reads it at /guides/guide.xml (see jellyfin volumes below).
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+      - JELLYFIN_PublishedServerUrl=http://192.168.114.2:8096  # update to your Unraid IP
+    volumes:
+      - /mnt/appdata/docker/volumes/jellyfin/config:/config
+      - /mnt/appdata/docker/volumes/jellyfin/cache:/cache
+      - /mnt/user/tv:/data/tv
+      - /mnt/user/movies:/data/movies
+      - /mnt/appdata/docker/volumes/webgrabplus/data:/guides:ro  # WebGrab++ output
+    ports:
+      - 8096:8096
+      - 8920:8920  # HTTPS (optional)
+      - 7359:7359/udp  # local network discovery
+      - 1900:1900/udp  # DLNA (optional)
+    devices:
+      - /dev/dri:/dev/dri  # Intel N5105 QSV hardware transcoding
+    restart: always
+    networks:
+      bridge-net-0: {}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8096/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/jellyfin.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8096]"
+
+networks:
+  bridge-net-0:
+    external: true

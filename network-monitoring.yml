@@ -1,0 +1,95 @@
+# ============================================================
+#  Network Monitoring Stack (fully self-hosted, no cloud accounts)
+#  - Speedtest Tracker: scheduled Ookla speedtests with history
+#  - Uptime Kuma:       ping latency / packet loss to router, Virgin, DNS
+#  - Beszel:            NAS + per-container network traffic with history
+#
+#  Setup:
+#    1. Add SPEEDTEST_APP_KEY to .env next to this file. Generate one with:
+#         echo "base64:$(openssl rand -base64 32)"
+#    2. Start the stack
+#    3. Speedtest Tracker: http://unraid-ip:8765
+#       (default login admin@example.com / password - change it)
+#    4. Uptime Kuma: http://unraid-ip:3001 - create an account, then add
+#       Ping monitors (see README for the target list)
+#    5. Beszel: http://unraid-ip:8090 - create an account, click "Add System",
+#       host 192.168.114.2, port 45876. Copy the public key it shows into .env
+#       as BESZEL_AGENT_KEY, then recreate the agent:
+#         docker compose -f network-monitoring.yml up -d beszel-agent
+# ============================================================
+
+services:
+
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+      - APP_KEY=${SPEEDTEST_APP_KEY}
+      - APP_URL=http://192.168.114.2:8765
+      - DB_CONNECTION=sqlite
+      - DISPLAY_TIMEZONE=Europe/Dublin
+      - SPEEDTEST_SCHEDULE=7 * * * *  # hourly, at 7 minutes past
+      - PRUNE_RESULTS_OLDER_THAN=180  # days
+    volumes:
+      - /mnt/appdata/docker/volumes/speedtest-tracker/config:/config
+    ports:
+      - 8765:80
+    restart: always
+    networks:
+      bridge-net-0: {}
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/speedtest-tracker.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8765]"
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:2
+    container_name: uptime-kuma
+    environment:
+      - TZ=Europe/Dublin
+    volumes:
+      - /mnt/appdata/docker/volumes/uptime-kuma/data:/app/data
+    ports:
+      - 3001:3001
+    restart: always
+    networks:
+      bridge-net-0: {}
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/uptime-kuma.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:3001]"
+
+  beszel:
+    image: henrygd/beszel:latest
+    container_name: beszel
+    environment:
+      - TZ=Europe/Dublin
+    volumes:
+      - /mnt/appdata/docker/volumes/beszel/hub:/beszel_data
+    ports:
+      - 8090:8090
+    restart: always
+    networks:
+      bridge-net-0: {}
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/beszel.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8090]"
+
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    network_mode: host  # needed to see the host's real network interfaces
+    environment:
+      - LISTEN=45876
+      - KEY=${BESZEL_AGENT_KEY}
+    volumes:
+      - /mnt/appdata/docker/volumes/beszel/agent:/var/lib/beszel-agent
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # per-container stats
+    restart: always
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/beszel.png"
+
+networks:
+  bridge-net-0:
+    external: true

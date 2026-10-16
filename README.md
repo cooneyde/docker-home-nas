@@ -1,33 +1,51 @@
 # docker-home-nas
-docker-compose for home server with adguard, sonarr, radarr, jackett, etc installed
+Docker Compose stacks for a home server running Unraid on an Asustor AS5404T (Intel N5105, 16GB RAM).
 
-## Services exposed
+## Stacks
 
-* Sonarr v3 https://github.com/linuxserver/docker-sonarr
-* Radarr v3 https://github.com/linuxserver/docker-radarr
-* Plex https://github.com/linuxserver/docker-plex
-* deluge https://github.com/linuxserver/docker-deluge
-* Jackett https://github.com/linuxserver/docker-jackett
-* Portainer (Container management UI) https://github.com/portainer/portainer
-* Ombi (managed aggregator for sonarr and radarr) https://github.com/linuxserver/docker-ombi
-* Heimdall (links UI to container UIs) https://github.com/linuxserver/Heimdall
-* AdGuard https://github.com/AdguardTeam/AdGuardHome
+| File | Services |
+|------|----------|
+| `docker-compose.yml` | Portainer |
+| `core-services.yml` | AdGuard Home, Backrest, Nginx Proxy Manager (+ MariaDB), Watchtower, Nextcloud (+ MariaDB), Redis, Dozzle, Cloudflare Tunnel |
+| `media-services.yml` | Plex, Radarr, Sonarr, Seerr, Deluge, Sportarr, Prowlarr, FlareSolverr |
+| `iptv.yml` | Threadfin, WebGrab+, Jellyfin |
+| `home-automation.yml` | Home Assistant, Matter Server |
+| `immich.yml` | Immich (server, machine learning, Valkey, Postgres) |
+| `network-monitoring.yml` | Speedtest Tracker, Uptime Kuma, Beszel (hub + agent) |
 
-
-## Setting up docker networks on both ethernet ports 
-Driver here is set to qnet, a native driver on QNAP NAS servers
+Bring a stack up with:
 
 ```
-docker network create --driver=qnet --ipam-driver=qnet --ipam-opt=iface=eth0 --subnet 192.168.X.0/24 --gateway 192.168.X.Z my-network
-
+docker compose -f core-services.yml up -d
 ```
 
-Another way to potentially set up the network is 
+## Paths
+* `/mnt/appdata/docker/volumes/<service>` – container config (the `appdata` pool)
+* `/mnt/user/...` – media and downloads on the array
+
+## Networks
+Both networks are external, so they must exist before starting a stack.
+
+* `br0` – Unraid's built-in custom network on the LAN (`192.168.114.0/24`), used for containers that need their own LAN IP (AdGuard on `.4`, Nginx Proxy Manager on `.101`). Enable it under *Settings → Docker → Custom network on interface br0*.
+* `bridge-net-0` – shared user-defined bridge so containers can reach each other by name:
 
 ```
-docker network create -d macvlan --subnet=192.168.X.0/24 --gateway=192.168.X.Z -o parent=eth0 my_macvlan_net
-
+docker network create --subnet 172.16.1.0/24 bridge-net-0
 ```
 
-## Useful URLs
-* Setting up bitwarden with https: https://scyzoryk.fubar.pl/bitwarden-on-qnap/
+## Secrets
+`core-services.yml` reads `CLOUDFLARE_TUNNEL_TOKEN`, `network-monitoring.yml` reads `SPEEDTEST_APP_KEY` and `BESZEL_AGENT_KEY`, and `immich.yml` reads `UPLOAD_LOCATION`, `DB_*` and `IMMICH_VERSION`, from a `.env` file next to the compose file. Don't commit `.env`.
+
+## Uptime Kuma ping monitors
+Add these as **Ping** monitors (interval 20s) to see where latency or packet loss starts:
+
+| Name | Host | Tells you |
+|------|------|-----------|
+| Router | `192.168.114.1` | Problems inside the home network |
+| Virgin Hub | `192.168.100.1` | Router ↔ Hub link (Hub in modem mode only) |
+| Virgin DNS 1 | `89.101.160.4` | Virgin's own network |
+| Virgin DNS 2 | `89.101.160.5` | Virgin's own network |
+| Quad9 | `9.9.9.11` | AdGuard upstream, beyond Virgin |
+| Cloudflare | `1.1.1.1` | AdGuard upstream, beyond Virgin |
+
+Bad on Router → home network; fine on Router but bad on Virgin targets → Virgin; only bad on Quad9/Cloudflare → beyond Virgin.

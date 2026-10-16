@@ -1,4 +1,3 @@
-version: '3'
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -9,10 +8,12 @@ services:
       - PGID=1000
       - UMASK_SET=022
       - VERSION=docker
+      - TZ=Europe/Dublin
       - ADVERTISE_IP=http://192.168.114.2:32400
     volumes:
       - /mnt/appdata/docker/volumes/plex:/config
       - /mnt/user/tv:/tv
+      - /mnt/user/sports:/sports
       - /mnt/user/movies:/movies
       - /mnt/user/transcode:/transcode
     restart: always
@@ -32,6 +33,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/plex.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:32400]/web"
   # xteve:
   #   image: alturismo/xteve
   #   container_name: xteve
@@ -40,20 +44,19 @@ services:
   #   environment:
   #     - PUID=1000
   #     - PGID=1000
-  #     - TZ=Europe/London
+  #     - TZ=Europe/Dublin
   #   volumes:
   #     - /volume1/Docker/volumes/xteve:/config
   #   restart: unless-stopped
   #   networks:
   #     bridge-net-0: {}
   radarr:
-    image: linuxserver/radarr
+    image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - DOCKER_MODS=lscr.io/linuxserver/mods:universal-stdout-logs
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/London
+      - TZ=Europe/Dublin
     volumes:
       - /mnt/user/docker/volumes/radarr:/config
       - /mnt/user/movies:/movies
@@ -65,10 +68,13 @@ services:
       - deluge
       - prowlarr
     healthcheck:
-      test: "curl -f http://localhost:7878"
+      test: "curl -f http://lbocalhost:7878"
       interval: 10s
       timeout: 10s
       retries: 3
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/radarr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:7878]"
     networks: 
       bridge-net-0: {}
       # docker-net-0:
@@ -77,12 +83,11 @@ services:
     image: linuxserver/sonarr:latest
     container_name: sonarr
     environment:
-      - DOCKER_MODS=lscr.io/linuxserver/mods:universal-stdout-logs
       - PUID=1000
       - PGID=1000
       - UMASK_SET=022
       - VERSION=docker
-      - TZ=Europe/London
+      - TZ=Europe/Dublin
     ports:
       - 8989:8989
     volumes:
@@ -98,38 +103,42 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/sonarr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8989]"
     networks: 
       bridge-net-0: {}
       # docker-net-0:
       #   ipv4_address: 192.168.114.107
-  overseerr:
-    image: lscr.io/linuxserver/overseerr:latest
-    container_name: overseerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
+    container_name: seerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Dublin
+      - PORT=5055 #optional
     ports:
       - 5055:5055
-    environment:
-      - DOCKER_MODS=lscr.io/linuxserver/mods:universal-stdout-logs
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
     volumes:
-      - /mnt/user/docker/volumes/overseerr/config:/config
-    healthcheck:
-      test: "curl -f http://localhost:5055"
-      interval: 10s
-      timeout: 10s
-      retries: 3
+      - /mnt/user/docker/volumes/seerr/config:/app/config
     networks: 
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.108
       bridge-net-0: {}
-    restart: always
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
+      start_period: 20s
+      timeout: 3s
+      interval: 15s
+      retries: 3
+    restart: unless-stopped
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/jellyseerr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:5055]"
   deluge:
     image: linuxserver/deluge:latest
     container_name: deluge
     environment:
-      - DOCKER_MODS=lscr.io/linuxserver/mods:universal-stdout-logs
-      - TZ=Europe/London
+      - TZ=Europe/Dublin
       - PUID=1000
       - PGID=1000
     volumes:
@@ -143,10 +152,36 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/deluge.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8112]"
     networks:
       bridge-net-0: {} 
       # docker-net-0:
       #   ipv4_address: 192.168.114.109
+  sportarr:
+    image: sportarr/sportarr:latest
+    container_name: sportarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK=022
+      - TZ=Europe/Dublin
+    volumes:
+      - /mnt/appdata/docker/volumes/sportarr/config:/config
+      - /mnt/user/sports:/data
+      - /mnt/user/downloads:/downloads
+    ports:
+      - 1867:1867
+    restart: always
+    depends_on:
+      - prowlarr
+      - deluge
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/sportarr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:1867]"
+    networks:
+      bridge-net-0: {}
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
@@ -154,7 +189,7 @@ services:
       - DOCKER_MODS=lscr.io/linuxserver/mods:universal-stdout-logs
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/London
+      - TZ=Europe/Dublin
     volumes:
       -  /mnt/appdata/docker/volumes/prowlarr/data:/config
     restart: always
@@ -165,6 +200,9 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/prowlarr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:9696]"
     networks: 
       # docker-net-0:
       #   ipv4_address: 192.168.114.111
@@ -174,7 +212,7 @@ services:
     container_name: flaresolverr
     environment:
       - LOG_LEVEL=info
-      - TZ=Europe/London
+      - TZ=Europe/Dublin
       - CAPTCHA_SOLVER=none
     ports:
       - 8191:8191
@@ -185,6 +223,8 @@ services:
       - homepage.icon=flaresolverr.png
       - homepage.href=http://192.168.114.2:8191/
       - homepage.description=Flaresolverr - proxy bypass cloudflare
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/flaresolverr.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8191]"
     networks:
       bridge-net-0: {}
 networks: 
