@@ -20,7 +20,7 @@ services:
       - /mnt/appdata/docker/volumes/adguardhome/confdir:/opt/adguardhome/conf
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/adguard-home.png"
-      - "net.unraid.docker.webui=http://[IP]:[PORT:8081]"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:80]"
     restart: always
   backrest:
     image: garethgeorge/backrest:latest
@@ -44,7 +44,7 @@ services:
       bridge-net-0: {}
     restart: always
     labels:
-      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/backrest.svg"
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/backrest.png"
       - "net.unraid.docker.webui=http://[IP]:[PORT:9898]"
 
   nginx-internal:
@@ -132,7 +132,7 @@ services:
       - /mnt/appdata/docker/volumes/nextcloud/config:/config
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/nextcloud.png"
-      - "net.unraid.docker.webui=http://[IP]:[PORT:32680]"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:80]"
     healthcheck:
       test: 'occ status 2>/dev/null | grep -e "installed: true" -e "maintenance: false" -e "needsDbUpgrade: false" | wc -l | [ "`cat`" = "3" ]'
       interval: 60s
@@ -201,7 +201,7 @@ services:
       bridge-net-0: {}
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/dozzle.png"
-      - "net.unraid.docker.webui=http://[IP]:[PORT:8083]"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8080]"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: always  

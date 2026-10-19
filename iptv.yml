@@ -53,6 +53,8 @@ services:
     # Default grab schedule is overnight. Output: /data/guide.xml
     # WebGrab+ doesn't serve HTTP, so share the file via a volume instead:
     # Jellyfin reads it at /guides/guide.xml (see jellyfin volumes below).
+    labels:
+      - "net.unraid.docker.icon=https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/webgrabplus-logo.png"
 
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest

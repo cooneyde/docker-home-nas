@@ -19,15 +19,6 @@ services:
     restart: always
     devices:
       - /dev/dri:/dev/dri
-    # networks:
-    #   bridge-net-0: {}
-    # ports:
-    #   - 32400:32400/tcp    # Core Plex (required)
-    #   - 32410:32410/udp    # GDM discovery (optional but helpful)
-    #   - 32412:32412/udp
-    #   - 32413:32413/udp
-    #   - 32414:32414/udp
-    #   - 8324:8324/tcp
     healthcheck:
       test: "curl -f http://localhost:32400/identity"
       interval: 10s
@@ -77,8 +68,6 @@ services:
       - "net.unraid.docker.webui=http://[IP]:[PORT:7878]"
     networks: 
       bridge-net-0: {}
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.106
   sonarr:
     image: linuxserver/sonarr:latest
     container_name: sonarr
@@ -108,8 +97,6 @@ services:
       - "net.unraid.docker.webui=http://[IP]:[PORT:8989]"
     networks: 
       bridge-net-0: {}
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.107
   seerr:
     image: ghcr.io/seerr-team/seerr:latest
     init: true
@@ -157,8 +144,6 @@ services:
       - "net.unraid.docker.webui=http://[IP]:[PORT:8112]"
     networks:
       bridge-net-0: {} 
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.109
   sportarr:
     image: sportarr/sportarr:latest
     container_name: sportarr
@@ -204,8 +189,6 @@ services:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/prowlarr.png"
       - "net.unraid.docker.webui=http://[IP]:[PORT:9696]"
     networks: 
-      # docker-net-0:
-      #   ipv4_address: 192.168.114.111
       bridge-net-0: {}
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest

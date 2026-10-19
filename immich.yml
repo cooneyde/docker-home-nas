@@ -35,6 +35,9 @@ services:
     restart: always
     healthcheck:
       disable: false
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/immich.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:2283]"
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -53,6 +56,8 @@ services:
     restart: always
     healthcheck:
       disable: false
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/immich.png"
 
   redis:
     container_name: immich_redis
@@ -62,6 +67,8 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/valkey.png"
 
   database:
     container_name: immich_postgres
@@ -79,6 +86,8 @@ services:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     shm_size: 128mb
     restart: always
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/postgresql.png"
     
 volumes:
   model-cache:

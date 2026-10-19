@@ -42,7 +42,7 @@ services:
       bridge-net-0: {}
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/speedtest-tracker.png"
-      - "net.unraid.docker.webui=http://[IP]:[PORT:8765]"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:80]"
 
   uptime-kuma:
     image: louislam/uptime-kuma:2

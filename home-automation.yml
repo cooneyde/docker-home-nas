@@ -2,8 +2,6 @@ services:
   homeassistant:
     container_name: homeassistant
     image: ghcr.io/home-assistant/home-assistant:stable
-    ports:
-      - 8123:8123
     volumes:
       - /mnt/appdata/docker/volumes/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
@@ -13,7 +11,10 @@ services:
     # devices:
     #   - /dev/ttyUSB0:/dev/ttyUSB0
     restart: always
-    network_mode: host
+    network_mode: host  # listens on 8123 directly; port mappings don't apply
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/home-assistant.png"
+      - "net.unraid.docker.webui=http://[IP]:[PORT:8123]"
     # networks: 
     #   bridge-net-0:
     #     ipv4_address: 172.16.1.10
@@ -27,10 +28,12 @@ services:
     volumes:
       - /mnt/appdata/docker/volumes/matter-server:/data
       - /run/dbus:/run/dbus:ro
-    privileged: true 
-    networks: 
+    privileged: true
+    networks:
       bridge-net-0:
         ipv4_address: 172.16.1.11
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/matter.png"
 networks: 
   bridge-net-0:
     external: true
