@@ -11,7 +11,7 @@ Docker Compose stacks for a home server running Unraid on an Asustor AS5404T (In
 | `iptv.yml` | Threadfin, WebGrab+, Jellyfin |
 | `home-automation.yml` | Home Assistant, Matter Server |
 | `immich.yml` | Immich (server, machine learning, Valkey, Postgres) |
-| `network-monitoring.yml` | Speedtest Tracker, Uptime Kuma, Beszel (hub + agent) |
+| `network-monitoring.yml` | Speedtest Tracker, Uptime Kuma |
 
 Bring a stack up with:
 
@@ -34,7 +34,7 @@ docker network create --subnet 172.16.1.0/24 bridge-net-0
 ```
 
 ## Secrets
-`core-services.yml` reads `CLOUDFLARE_TUNNEL_TOKEN`, `network-monitoring.yml` reads `SPEEDTEST_APP_KEY` and `BESZEL_AGENT_KEY`, and `immich.yml` reads `UPLOAD_LOCATION`, `DB_*` and `IMMICH_VERSION`, from a `.env` file next to the compose file. Don't commit `.env`.
+`core-services.yml` reads `CLOUDFLARE_TUNNEL_TOKEN`, `network-monitoring.yml` reads `SPEEDTEST_APP_KEY`, and `immich.yml` reads `UPLOAD_LOCATION`, `DB_*` and `IMMICH_VERSION`, from a `.env` file next to the compose file. Don't commit `.env`.
 
 ## Uptime Kuma ping monitors
 Add these as **Ping** monitors (interval 20s) to see where latency or packet loss starts:
