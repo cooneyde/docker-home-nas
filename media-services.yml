@@ -9,7 +9,7 @@ services:
       - UMASK_SET=022
       - VERSION=docker
       - TZ=Europe/Dublin
-      - ADVERTISE_IP=http://192.168.114.2:32400
+      - ADVERTISE_IP=http://192.168.114.29:32400
     volumes:
       - /mnt/appdata/docker/volumes/plex:/config
       - /mnt/user/tv:/tv
@@ -59,7 +59,7 @@ services:
       - deluge
       - prowlarr
     healthcheck:
-      test: "curl -f http://lbocalhost:7878"
+      test: "curl -f http://localhost:7878"
       interval: 10s
       timeout: 10s
       retries: 3
@@ -201,11 +201,6 @@ services:
       - 8191:8191
     restart: always
     labels:
-      - homepage.group=Networking
-      - homepage.name=Flaresolverr
-      - homepage.icon=flaresolverr.png
-      - homepage.href=http://192.168.114.2:8191/
-      - homepage.description=Flaresolverr - proxy bypass cloudflare
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/flaresolverr.png"
       - "net.unraid.docker.webui=http://[IP]:[PORT:8191]"
     networks:

@@ -1,0 +1,7 @@
+# Copy to cloudflare-token.local (not committed) and fill in.
+# Token: Cloudflare dashboard -> My Profile -> API Tokens -> Create Token,
+#        permission Zone / Firewall Services / Edit, limited to your zone.
+# Zone ID: shown on the domain's Overview page.
+[Init]
+cfzone  = YOUR_ZONE_ID
+cftoken = YOUR_API_TOKEN

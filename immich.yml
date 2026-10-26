@@ -6,6 +6,10 @@
 # https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
 #
 # The compose file on main may not be compatible with the latest release.
+#
+# Needs hwaccel.transcoding.yml and hwaccel.ml.yml next to this file, and a .env
+# (see .env.example). Keep Immich's .env separate from the other stacks' secrets:
+# env_file passes every variable in it into the Immich containers.
 
 name: immich
 
@@ -15,39 +19,47 @@ services:
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     extends:
       file: hwaccel.transcoding.yml
-      service: cpu # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
+      service: quicksync # Intel N5105 QuickSync; this also passes /dev/dri through
     volumes:
       # Do not edit the next line. If you want to change the media storage location on your system, edit the value of UPLOAD_LOCATION in the .env file
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
-      - /mnt/appdata/docker/volumes/nextcloud/data/cooneyde/files/InstantUpload:/mnt/media:ro
+      - /mnt/user/media/nextcloud/data/cooneyde/files/InstantUpload:/mnt/media:ro
       - /etc/localtime:/etc/localtime:ro
-    devices:
-      - /dev/dri:/dev/dri
     env_file:
       - .env
-    networks: 
+    environment:
+      # Services below are named immich-* so they can't clash with the core stack's `redis`
+      # (Nextcloud uses it) on the shared bridge-net-0 network
+      DB_HOSTNAME: immich-database
+      REDIS_HOSTNAME: immich-redis
+      IMMICH_LOG_LEVEL: warn # keeps Unraid's syslog small; failed logins are WARN, so fail2ban still sees them
+    networks:
       bridge-net-0: {}
     ports:
       - '2283:2283'
     depends_on:
-      - redis
-      - database
+      - immich-redis
+      - immich-database
     restart: always
     healthcheck:
       disable: false
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/immich.png"
       - "net.unraid.docker.webui=http://[IP]:[PORT:2283]"
+    logging:
+      driver: syslog  # so fail2ban can read failed logins from /var/log/syslog
+      options:
+        tag: immich
 
   immich-machine-learning:
     container_name: immich_machine_learning
     # For hardware acceleration, add one of -[armnn, cuda, openvino] to the image tag.
     # Example tag: ${IMMICH_VERSION:-release}-cuda
-    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-OpenVINO
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}-openvino
     extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
       file: hwaccel.ml.yml
       service: openvino # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
-    networks: 
+    networks:
       bridge-net-0: {}
     volumes:
       - model-cache:/cache
@@ -59,10 +71,10 @@ services:
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/immich.png"
 
-  redis:
+  immich-redis:
     container_name: immich_redis
     image: docker.io/valkey/valkey:8-bookworm@sha256:fea8b3e67b15729d4bb70589eb03367bab9ad1ee89c876f54327fc7c6e618571
-    networks: 
+    networks:
       bridge-net-0: {}
     healthcheck:
       test: redis-cli ping || exit 1
@@ -70,10 +82,10 @@ services:
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/valkey.png"
 
-  database:
+  immich-database:
     container_name: immich_postgres
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:41eacbe83eca995561fe43814fd4891e16e39632806253848efaf04d3c8a8b84
-    networks: 
+    networks:
       bridge-net-0: {}
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -88,9 +100,9 @@ services:
     restart: always
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/postgresql.png"
-    
+
 volumes:
   model-cache:
-networks: 
-  bridge-net-0: 
+networks:
+  bridge-net-0:
     external: true

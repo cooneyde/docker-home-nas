@@ -1,1 +1,5 @@
 .env
+fail2ban/action.d/cloudflare-token.local
+.DS_Store
+.idea/
+fail2ban api.md

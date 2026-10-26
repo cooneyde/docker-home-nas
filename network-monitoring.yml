@@ -23,7 +23,7 @@ services:
       - PGID=1000
       - TZ=Europe/Dublin
       - APP_KEY=${SPEEDTEST_APP_KEY}
-      - APP_URL=http://192.168.114.2:8765
+      - APP_URL=http://192.168.114.29:8765
       - DB_CONNECTION=sqlite
       - DISPLAY_TIMEZONE=Europe/Dublin
       - SPEEDTEST_SCHEDULE=7 * * * *  # hourly, at 7 minutes past

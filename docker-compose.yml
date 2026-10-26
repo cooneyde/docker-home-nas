@@ -16,11 +16,6 @@ services:
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/portainer.png"
       - "net.unraid.docker.webui=http://[IP]:[PORT:9000]"
-    healthcheck:
-      test: ["CMD", "/portainer", "--healthcheck"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 networks: 
   bridge-net-0:
     external: true

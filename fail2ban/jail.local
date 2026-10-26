@@ -1,0 +1,48 @@
+# Copy this folder's contents into /mnt/appdata/docker/volumes/fail2ban/fail2ban/
+# then restart the fail2ban container.
+
+[DEFAULT]
+# Never ban the LAN or Docker networks (this includes cloudflared itself)
+ignoreip = 127.0.0.1/8 ::1
+           10.0.0.0/8
+           172.16.0.0/12
+           192.168.0.0/16
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+# Each repeat ban lasts longer, up to a week
+bantime.increment = true
+bantime.maxtime   = 1w
+banaction           = iptables-multiport
+banaction_allports  = iptables-allports
+
+# --- Unraid host: ban in the host firewall ---
+
+[unraid-sshd]
+enabled = true
+chain   = INPUT
+
+[unraid-webgui]
+enabled = true
+chain   = INPUT
+
+# --- Apps exposed through Cloudflare Tunnel ---
+# Tunnel traffic never touches the home firewall, so these ban at
+# Cloudflare's edge instead (needs action.d/cloudflare-token.local).
+
+[nextcloud-auth]
+enabled = true
+logpath = /remotelogs/nextcloud/nextcloud.log
+action  = cloudflare-token
+
+[seerr-auth]
+enabled = true
+filter  = overseerr-auth
+logpath = /remotelogs/seerr/seerr.log
+action  = cloudflare-token
+
+[immich-auth]
+enabled = true
+filter  = immich-auth
+logpath = /var/log/syslog
+action  = cloudflare-token

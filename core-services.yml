@@ -3,7 +3,6 @@ services:
     container_name: adguard
     image: adguard/adguardhome
     dns:
-      - 127.0.0.1
       - 1.1.1.1
     ports:
       - 53:53/tcp # plain dns over tcp
@@ -91,10 +90,7 @@ services:
       - MYSQL_DATABASE=npm
       - MYSQL_USER=npm
       - MYSQL_PASSWORD=npm
-      # This variable is specifically read by healthcheck.sh 
-      # It appends these flags to the internal mariadb-admin command
       - MARIADB_AUTO_UPGRADE=1
-      - MARIADB_HEALTHCHECK_ARGUMENTS=--user=root --password=my-cool-bicycle
     networks: 
       bridge-net-0: {}
     volumes:
@@ -102,12 +98,13 @@ services:
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mariadb.png"
     healthcheck:
-      test: "healthcheck.sh --connect --innodb_initialized"
+      test: ["CMD-SHELL", "mariadb -h localhost -u \"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" -e 'SELECT 1' >/dev/null"]
       interval: 10s
       timeout: 5s
       retries: 3
+      start_period: 30s
   watchtower:
-    image: containrrr/watchtower
+    image: nickfedor/watchtower
     container_name: watchtower
     network_mode: bridge
     volumes:
@@ -159,15 +156,15 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=my-next-bicycle-cloud
-      - MARIADB_HEALTHCHECK_ARGUMENTS=--user=root --password=my-cool-bicycle
       - MARIADB_AUTO_UPGRADE=1
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/mariadb.png"
     healthcheck:
-      test: "healthcheck.sh --connect --innodb_initialized"
+      test: ["CMD-SHELL", "mariadb -h localhost -u \"$$MYSQL_USER\" -p\"$$MYSQL_PASSWORD\" -e 'SELECT 1' >/dev/null"]
       interval: 10s
       timeout: 5s
       retries: 3
+      start_period: 30s
     restart: always
   redis:
     image: redis:alpine
@@ -219,6 +216,27 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+  fail2ban:
+    image: lscr.io/linuxserver/fail2ban:latest
+    container_name: fail2ban
+    network_mode: host  # needs the host firewall to apply bans
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+      - VERBOSITY=-vv
+    volumes:
+      - /mnt/appdata/docker/volumes/fail2ban:/config  # copy ./fail2ban/* into /config/fail2ban/
+      - /var/log:/var/log:ro  # Unraid syslog (SSH, web GUI and Immich logins)
+      - /mnt/appdata/docker/volumes/nextcloud/config/log/nextcloud:/remotelogs/nextcloud:ro
+      - /mnt/user/docker/volumes/seerr/config/logs:/remotelogs/seerr:ro
+    labels:
+      - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/fail2ban.png"
+    restart: always
 
 networks: 
   br0:

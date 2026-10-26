@@ -1,0 +1,9 @@
+# Immich failed logins, from Unraid's syslog (immich-server uses the syslog log driver), e.g.
+# Oct 23 10:00:00 Tower immich[1234]: [Nest] 7  - 10/23/2026, 10:00:00 AM    WARN [Api:AuthService] Failed login attempt for user bob@example.com from ip address 203.0.113.9
+[INCLUDES]
+before = common.conf
+
+[Definition]
+_daemon   = immich
+failregex = ^%(__prefix_line)s.*Failed login attempt for user .* from ip address <HOST>\s*$
+ignoreregex =

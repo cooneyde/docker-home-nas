@@ -1,7 +1,7 @@
 # ============================================================
 #  IPTV Stack
 #  - Threadfin:    M3U/EPG manager + HDHomeRun emulator
-#  - EPG Grabber:  pulls XMLTV guide data on a schedule
+#  - WebGrab+:     pulls XMLTV guide data on a schedule
 #  - Jellyfin:     Live TV frontend + media server
 #
 #  Setup order:
@@ -28,7 +28,7 @@ services:
     networks:
       bridge-net-0: {}
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:34400/web"]
+      test: ["CMD", "curl", "-fs", "-o", "/dev/null", "http://localhost:34400/web/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -63,7 +63,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Dublin
-      - JELLYFIN_PublishedServerUrl=http://192.168.114.2:8096  # update to your Unraid IP
+      - JELLYFIN_PublishedServerUrl=http://192.168.114.29:8096
     volumes:
       - /mnt/appdata/docker/volumes/jellyfin/config:/config
       - /mnt/appdata/docker/volumes/jellyfin/cache:/cache
@@ -74,7 +74,6 @@ services:
       - 8096:8096
       - 8920:8920  # HTTPS (optional)
       - 7359:7359/udp  # local network discovery
-      - 1900:1900/udp  # DLNA (optional)
     devices:
       - /dev/dri:/dev/dri  # Intel N5105 QSV hardware transcoding
     restart: always
