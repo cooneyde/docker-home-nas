@@ -180,7 +180,10 @@ services:
     labels:
       - "net.unraid.docker.icon=https://cdn.jsdelivr.net/gh/selfhst/icons@main/png/redis.png"
     networks:
-      bridge-net-0: {}
+      bridge-net-0:
+        # Nextcloud connects with this name: plain `redis` also resolves to Immich's Redis
+        aliases:
+          - nextcloud-redis
     healthcheck:
       test: "redis-cli ping"
       interval: 10s
